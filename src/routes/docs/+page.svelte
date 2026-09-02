@@ -1,14 +1,18 @@
 <script>
 	import { CLIENTS, SUBMIT, SCOPES } from '$lib/docsData.js';
 
+	let { data } = $props();
+
 	let clientIdx = $state(0);
 	const client = $derived(CLIENTS[clientIdx]);
 
-	const ENV = `PORT=8080
+	// The version comes from the latest Codeberg tag at build time; if that
+	// lookup failed, show the placeholder rather than a stale number.
+	const ENV = $derived(`PORT=8080
 HOST=0.0.0.0
 SQLITE_DB_PATH=./tapedeck.db
 RUST_LOG=info
-MUSICBRAINZ_USER_AGENT=Tapedeck/0.96.0 ( you@example.com )`;
+MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com )`);
 
 	const NP = `GET /public/np/<username>
 

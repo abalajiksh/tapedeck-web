@@ -151,6 +151,31 @@ static/             favicon, Cloudflare `_headers`
 wrangler.jsonc      tells wrangler that build/ is the asset directory
 ```
 
+### The version number
+
+The version in the hero and in the Docs env example is **not hard-coded** — it
+is the highest tag on
+[the Codeberg repo](https://codeberg.org/abksh/tapedeck/tags), read at build
+time by `src/lib/version.server.js`.
+
+It is read at build time rather than in the reader's browser because the site
+otherwise makes no third-party request, and a version chip isn't worth handing
+every visitor's IP to Codeberg for. If the lookup fails the version is simply
+omitted — a missing version beats a wrong one, and a Codeberg outage never fails
+the build.
+
+The practical consequence: **it is only as fresh as the last deploy.** Every push
+here and every merged plugin PR refreshes it. If you tag a release on Codeberg
+and want the site to follow without a commit here, trigger a rebuild of the
+Cloudflare project from the release pipeline.
+
+### The 404 page
+
+`static/404.html` is deliberately a plain, self-contained page rather than the
+SvelteKit fallback shell — the shell renders blank without JavaScript. It is the
+one file that repeats design-token values instead of reading them, because it
+can't reference the fingerprinted app CSS; keep it in step if the palette moves.
+
 `src/app.css` is the source of truth for colour, type, spacing and radii — take
 values from its `var(--color-*)`, `var(--font-*)`, `var(--space-*)` and
 `var(--radius-*)` tokens rather than hard-coding them.

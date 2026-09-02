@@ -15,6 +15,10 @@
 		LYRIC_SIDE
 	} from '$lib/homeData.js';
 
+	// `version` is the latest Codeberg tag, read at build time; null if that
+	// lookup failed, in which case the chip simply omits it.
+	let { data } = $props();
+
 	const mmss = (s) => {
 		s = Math.max(0, Math.floor(s));
 		return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
@@ -235,7 +239,9 @@
 	<div class="blob blob-b"></div>
 	<div class="hero-grid">
 		<div class="rise">
-			<span class="tag tag-accent-2">Self-hosted · Single Rust binary · v0.96</span>
+			<span class="tag tag-accent-2"
+				>Self-hosted · Single Rust binary{data.version ? ` · v${data.version}` : ''}</span
+			>
 			<h1>
 				Not just what you played.<br /><span class="accent">How you played it.</span>
 			</h1>
