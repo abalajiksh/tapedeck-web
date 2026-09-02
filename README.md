@@ -119,16 +119,21 @@ bun run build
 
 ### Deploying
 
-Cloudflare Pages, Git integration:
+Cloudflare, via Workers Builds connected to this GitHub repo:
 
 | Setting | Value |
 | --- | --- |
 | Build command | `bun install && bun run build` |
-| Build output directory | `build` |
+| Deploy command | `npx wrangler deploy` |
+| Non-production branch deploy command | `npx wrangler versions upload` |
 
-Every route is prerendered (`prerender = true` in `src/routes/+layout.js`), so
-Pages serves files and no Workers runtime is involved — which is why this uses
-`@sveltejs/adapter-static` rather than `adapter-cloudflare`.
+There is no "output directory" field in that flow — `wrangler.jsonc` is what
+points at `build/`. It declares no `main`, so this deploys as **static assets
+with no Worker script**: Cloudflare serves the prerendered files directly.
+
+Every route is prerendered (`prerender = true` in `src/routes/+layout.js`),
+which is why this uses `@sveltejs/adapter-static` rather than
+`adapter-cloudflare` — nothing here needs a Worker at request time.
 
 ### Layout
 
@@ -143,6 +148,7 @@ src/
   lib/              components, the plugin loader, page copy
   routes/           one folder per page
 static/             favicon, Cloudflare `_headers`
+wrangler.jsonc      tells wrangler that build/ is the asset directory
 ```
 
 `src/app.css` is the source of truth for colour, type, spacing and radii — take
