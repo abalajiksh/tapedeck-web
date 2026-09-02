@@ -1,0 +1,10 @@
+{
+  "name": "SONE",
+  "by": "TIDAL player for Linux",
+  "kind": "Player plugin",
+  "category": "Players",
+  "status": "soon",
+  "summary": "Scrobbling support for the SONE TIDAL client on Linux. Not started — listed because it is next in the queue rather than because there is code to look at.",
+  "adds": "TIDAL playback with its real delivery format attached",
+  "order": 30
+}

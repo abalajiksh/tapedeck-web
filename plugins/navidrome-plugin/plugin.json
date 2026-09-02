@@ -1,0 +1,10 @@
+{
+  "name": "Navidrome plugin",
+  "by": "by a contributor",
+  "kind": "Server plugin",
+  "category": "Servers",
+  "status": "dev",
+  "summary": "A plugin on the Navidrome side, rather than Tapedeck polling it from outside. Navidrome is already supported as a polled source today; this is the tighter integration.",
+  "adds": "Push instead of poll, and metadata the Subsonic surface doesn't expose",
+  "order": 20
+}

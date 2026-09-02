@@ -1,0 +1,10 @@
+{
+  "name": "Audio analysis plugin",
+  "by": "Plex · Jellyfin · OpenSubsonic",
+  "kind": "Analysis",
+  "category": "Analysis",
+  "status": "dev",
+  "summary": "Computes multidimensional features from the actual audio files, next to your library, and hands the coordinates back to the deck. This is what replaces the Every Noise placeholder behind the Genre Map and Playlist Lab.",
+  "adds": "Per-recording sound coordinates instead of per-artist ones",
+  "order": 40
+}

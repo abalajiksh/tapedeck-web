@@ -1,0 +1,12 @@
+{
+  "name": "fooyin-tapeout",
+  "by": "by abalajiksh",
+  "kind": "Player plugin",
+  "category": "Players",
+  "status": "dev",
+  "summary": "A native Tapedeck plugin for fooyin, so the player reports what the ListenBrainz wire format has no field for. Under active development and not yet tested — fooyin already scrobbles to Tapedeck over the generic ListenBrainz path in the meantime.",
+  "adds": "Output device, decoded format and chain tagging straight from the player",
+  "link": "https://github.com/abalajiksh/fooyin-tapeout",
+  "linkLabel": "View on GitHub",
+  "order": 10
+}

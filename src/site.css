@@ -1,0 +1,64 @@
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); }
+  a { color: var(--color-accent-700); text-underline-offset: 3px; }
+  a:hover { color: var(--color-accent-600); }
+  @keyframes td-spin { to { transform: rotate(360deg); } }
+  @keyframes td-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; } }
+
+  /* ── theme: dark inverts the ground and the light fills; the deck's own
+       panels and the sage/accent patches stay warm, so the alternating
+       rhythm survives instead of flattening into one tone. ── */
+  :root { --td-ink:#f9f4ed; --td-ink-2:#dcd3c4;
+    --td-tint:var(--color-accent-100); --td-tint-edge:var(--color-accent-400);
+    --td-tint-2:var(--color-accent-2-100); --td-tint-2-edge:var(--color-accent-2-400);
+    --td-band-2:var(--color-accent-2-100); --td-band-2-ink:#272e1b;
+    --td-band-2-card:color-mix(in srgb, #ffffff 55%, transparent);
+    --td-band-2-edge:var(--color-accent-2-300);
+    --td-band-2-tag:#3d472b; --td-band-2-tag-ink:#f0fae1;
+    --td-on-tint:var(--color-neutral-800);
+    --td-blob-1:var(--color-accent-200); --td-blob-2:var(--color-accent-2-200); --td-blob-o:0.55; }
+  html[data-theme="dark"] {
+    --color-bg:#1a1815;
+    --color-surface:#252119;
+    --color-text:#f5ead8;
+    --color-divider:rgba(245,234,216,0.17);
+    --color-neutral-100:#221f1a;
+    --color-neutral-200:#2b2721;
+    --color-neutral-300:#3a352d;
+    --color-neutral-600:#a89d8a;
+    --color-neutral-700:#cfc4ae;
+    --color-neutral-800:#e6dcc8;
+    --color-accent-700:#f6a06b;
+    --td-tint:#33210f; --td-tint-edge:#8c491a;
+    --td-tint-2:#252b1a; --td-tint-2-edge:#56633f;
+    --td-band-2:#1e2315; --td-band-2-ink:#e4eed2;
+    --td-band-2-card:rgba(240,250,225,0.05);
+    --td-band-2-edge:rgba(228,238,210,0.16);
+    --td-band-2-tag:#485433; --td-band-2-tag-ink:#f0fae1;
+    --td-on-tint:#e6dcc8;
+    --td-blob-1:var(--color-accent-800); --td-blob-2:var(--color-accent-2-800); --td-blob-o:0.5;
+  }
+  html[data-theme="dark"] .tag-neutral { background:#2b2721; color:#e6dcc8; }
+  html[data-theme="dark"] .input { background:#221f1a; color:var(--color-text); }
+  html[data-theme="dark"] .btn-primary { color:#1a1815; }
+  html[data-theme="dark"] .table tbody tr:hover { background:rgba(245,234,216,0.05); }
+  html[data-theme="dark"] code { color:var(--color-accent-700); }
+  html[data-theme="dark"] .elev-sm, html[data-theme="dark"] .elev-md, html[data-theme="dark"] .elev-lg {
+    box-shadow:none; border:1px solid var(--color-divider);
+  }
+  /* kicker + meta contrast — the accent is tuned to 3:1 for chrome, not for
+     10px labels; the guide prescribes a deep ramp step for small accent text. */
+  .card-kicker { color: var(--color-accent-700); }
+  .card-meta, .text-muted { color: color-mix(in srgb, var(--color-text) 68%, transparent); }
+  html[data-theme="dark"] .card-meta, html[data-theme="dark"] .text-muted {
+    color: color-mix(in srgb, var(--color-text) 68%, transparent);
+  }
+  html[data-theme="dark"] .card-body { opacity: 0.88; }
+  html[data-theme="dark"] .td-i-moon { display:none; }
+  html[data-theme="light"] .td-i-sun { display:none; }
+  .td-theme-btn { display:grid; place-items:center; width:36px; height:36px; flex:none;
+    cursor:pointer; border-radius:999px; border:1px solid var(--color-divider);
+    background:transparent; color:var(--color-text); }
+  .td-theme-btn:hover { background:color-mix(in srgb, var(--color-text) 8%, transparent); }
+  .td-theme-btn:active { background:color-mix(in srgb, var(--color-text) 15%, transparent); }

@@ -1,0 +1,12 @@
+{
+  "name": "Pano Scrobbler",
+  "by": "kawaiiDango",
+  "kind": "Scrobble client",
+  "category": "Players",
+  "status": "shipped",
+  "summary": "The primary ingest client and the inspiration for a good deal of this. Add a custom ListenBrainz server, paste a token, and it covers Walkman, Android and desktop Linux via MPRIS.",
+  "adds": "Nothing to install on the Tapedeck side — it already speaks the API",
+  "link": "https://github.com/kawaiiDango/pano-scrobbler",
+  "linkLabel": "View on GitHub",
+  "order": 60
+}

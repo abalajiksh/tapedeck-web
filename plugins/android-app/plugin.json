@@ -1,0 +1,10 @@
+{
+  "name": "Android app",
+  "by": "first-party",
+  "kind": "Mobile",
+  "category": "Apps",
+  "status": "planned",
+  "summary": "Browse the history, scan a barcode onto the shelf, and scrobble what the phone itself is playing — no third-party scrobbler in between.",
+  "adds": "AudioDeviceInfo: USB DAC vs Bluetooth vs speaker, straight onto the chain ladder's device rung",
+  "order": 50
+}

@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+
+# Design source / scratch — not part of the deployed site
+temp/
+
+# Agent guidance (local only)
+CLAUDE.md
+
+# Node
+node_modules/
+.env
+.env.*
+!.env.example
+
+# SvelteKit
+.svelte-kit/
+build/
+.wrangler/

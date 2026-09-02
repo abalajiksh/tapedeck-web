@@ -1,0 +1,10 @@
+{
+  "name": "Hugo now-playing shortcode",
+  "by": "ships in the repo",
+  "kind": "Site integration",
+  "category": "Apps",
+  "status": "shipped",
+  "summary": "Drop it in your static site and it renders whatever is on your deck, fetched from the reader's browser against the one opt-in public endpoint. Degrades to nothing when the server is down or the deck is empty.",
+  "adds": "A live badge on your own site with none of your credentials in it",
+  "order": 80
+}

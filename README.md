@@ -1,1 +1,158 @@
 # tapedeck-web
+
+**This is only the website.** It is the marketing site for
+**[Tapedeck](https://codeberg.org/abksh/tapedeck)** — a self-hosted music
+intelligence hub written in Rust — and it lives at
+[tapedeck.cc](https://tapedeck.cc).
+
+The program itself is not in this repository. Issues and pull requests about
+Tapedeck the *software* belong on Codeberg:
+
+**→ https://codeberg.org/abksh/tapedeck**
+
+What is here is a static SvelteKit build deployed to Cloudflare Pages, and the
+registry of plugins and clients the site lists.
+
+---
+
+## Adding your plugin to the site
+
+Written something that talks to a Tapedeck deck? Get it listed. **Adding a
+plugin is adding a folder** — you don't have to touch any site code, and you
+don't need to understand SvelteKit.
+
+### 1. Fork this repository
+
+Fork [`abalajiksh/tapedeck-web`](https://github.com/abalajiksh/tapedeck-web) on
+GitHub, then clone your fork:
+
+```bash
+git clone git@github.com:YOUR-USERNAME/tapedeck-web.git
+```
+
+### 2. Add a folder under `plugins/`
+
+The folder name becomes the URL, so keep it lowercase and hyphenated:
+
+```
+plugins/
+  my-plugin/
+    plugin.json     required — the card details
+    README.md       optional — its presence is what earns a page of its own
+```
+
+A minimal `plugin.json`:
+
+```json
+{
+  "name": "my-plugin",
+  "by": "by your-handle",
+  "kind": "Player plugin",
+  "category": "Players",
+  "status": "dev",
+  "summary": "One paragraph describing what it is. This becomes the card body.",
+  "adds": "What it contributes that the plain ListenBrainz path cannot",
+  "link": "https://github.com/you/my-plugin",
+  "linkLabel": "View on GitHub"
+}
+```
+
+Every field, the category list and the five statuses are documented in
+**[`plugins/README.md`](plugins/README.md)**. Copy an existing folder if that's
+easier — [`plugins/fooyin-tapeout/`](plugins/fooyin-tapeout/) is a good model.
+
+Add a `README.md` alongside it and your plugin gets its own page at
+`/plugins/my-plugin/` with that Markdown as the body — install steps, caveats,
+whatever a reader needs. Leave it out and the card simply links straight to your
+repo instead.
+
+### 3. Check it builds
+
+```bash
+bun install && bun run build
+```
+
+A missing field, an unknown status or a relative link **fails the build** with
+your file named, so this catches mistakes before review does. If you'd rather
+just look at it:
+
+```bash
+bun run dev
+```
+
+### 4. Open a pull request
+
+Push the branch to your fork and open a PR against `main` here. Once it's
+merged, Cloudflare Pages rebuilds and your plugin is on the site.
+
+### A note on statuses
+
+The Plugins page says what is actually true about each entry, including the
+things that aren't finished, and that is the point of it. Pick the honest one:
+`shipped` only if it works today; `untested` if it is built but has never run
+against the real thing; `dev`, `soon` or `planned` otherwise. A status can
+always be upgraded in a later PR.
+
+You don't need permission to open the PR, and it doesn't have to be a
+first-party plugin — third-party clients are listed here too.
+
+---
+
+## Working on the site itself
+
+Bun only; there is no npm lockfile.
+
+```bash
+bun install
+```
+
+```bash
+bun run dev
+```
+
+```bash
+bun run build
+```
+
+`build/` is the deployable output — plain HTML, CSS and JS. Preview it with
+`bun run preview`.
+
+### Deploying
+
+Cloudflare Pages, Git integration:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `bun install && bun run build` |
+| Build output directory | `build` |
+
+Every route is prerendered (`prerender = true` in `src/routes/+layout.js`), so
+Pages serves files and no Workers runtime is involved — which is why this uses
+`@sveltejs/adapter-static` rather than `adapter-cloudflare`.
+
+### Layout
+
+```
+plugins/            the plugin registry — one folder per plugin
+src/
+  fonts.css         self-hosted @font-face rules
+  app.css           the Organic design system, verbatim
+  site.css          site-level theme overrides (light and dark)
+  pages.css         layout utilities shared by the content pages
+  app.html          shell; resolves the theme before first paint
+  lib/              components, the plugin loader, page copy
+  routes/           one folder per page
+static/             favicon, Cloudflare `_headers`
+```
+
+`src/app.css` is the source of truth for colour, type, spacing and radii — take
+values from its `var(--color-*)`, `var(--font-*)`, `var(--space-*)` and
+`var(--radius-*)` tokens rather than hard-coding them.
+
+Caprasimo and Figtree are served from `static/fonts/`, so the site makes no
+third-party request. See the header comment in `src/fonts.css` for how to
+refresh them.
+
+## Licence
+
+See [LICENSE](LICENSE).

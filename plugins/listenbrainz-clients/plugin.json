@@ -1,0 +1,10 @@
+{
+  "name": "Web Scrobbler · multi-scrobbler · mpdscribble",
+  "by": "third-party",
+  "kind": "Scrobble clients",
+  "category": "Players",
+  "status": "shipped",
+  "summary": "All work today over the ListenBrainz-compatible endpoints. Issue one token per app and give each a default chain; attribution then costs the client no configuration at all.",
+  "adds": "Browser, aggregator and MPD listening, chained by token",
+  "order": 70
+}

@@ -1,0 +1,182 @@
+/* Layout and typography shared by the content pages (Features, Shelf, Patch,
+   Docs). The home page carries its own scoped styles — it is mostly bespoke
+   components rather than these repeating shapes. */
+
+.wrap {
+	max-width: 1180px;
+	margin: 0 auto;
+}
+.band {
+	padding: 80px 32px;
+}
+.band.surface {
+	background: var(--color-surface);
+}
+.band.dark {
+	background: var(--color-neutral-900);
+	color: var(--td-ink);
+}
+.band.band-2 {
+	background: var(--td-band-2);
+	color: var(--td-band-2-ink);
+}
+.page-head {
+	padding: 80px 32px 56px;
+}
+
+.page-head h1 {
+	font-size: clamp(40px, 4.8vw, 66px);
+	letter-spacing: -0.03em;
+	line-height: 1.03;
+	margin: 18px 0 0;
+	max-width: 18ch;
+}
+.h2 {
+	font-size: 38px;
+	letter-spacing: -0.02em;
+}
+.h2.on-dark {
+	color: var(--td-ink);
+}
+.h3 {
+	font-size: 24px;
+}
+.lede {
+	font-size: 19px;
+	max-width: 60ch;
+	margin-top: 20px;
+	color: var(--color-neutral-700);
+	text-wrap: pretty;
+}
+.para {
+	font-size: 17px;
+	color: var(--color-neutral-700);
+	text-wrap: pretty;
+}
+.para.sm {
+	font-size: 16px;
+}
+.para.wide {
+	max-width: 62ch;
+}
+.para.ink-2 {
+	color: var(--td-ink-2);
+}
+.fine {
+	font-size: 14px;
+	color: var(--color-neutral-500);
+}
+.ink {
+	color: var(--td-ink);
+}
+.ink-2 {
+	color: var(--td-ink-2);
+}
+.push {
+	margin-left: auto;
+}
+
+/* Auto-fitting card/column grids, by minimum column width. */
+.grid-240 {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 18px;
+}
+.grid-260 {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 18px;
+}
+.grid-280 {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
+}
+.grid-300 {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 22px;
+}
+.grid-320 {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 40px;
+}
+
+.pillrow {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+/* A pill in a filter/tab row. Selected state is set inline from the data, so
+   only the shared shape lives here. */
+.pill {
+	cursor: pointer;
+	font: inherit;
+	font-size: 13px;
+	padding: 8px 15px;
+	border-radius: 999px;
+	border: 1px solid var(--color-divider);
+	background: transparent;
+	color: var(--color-text);
+}
+.pill.lg {
+	font-family: var(--font-heading);
+	font-size: 14px;
+	padding: 9px 18px;
+}
+
+.eyebrow {
+	font-size: 11px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-neutral-500);
+}
+
+.btn-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+.btn-row.center {
+	justify-content: center;
+}
+.btn-row .btn {
+	text-decoration: none;
+}
+.btn.accent-btn {
+	background: var(--color-accent);
+	color: var(--color-neutral-900);
+	text-decoration: none;
+	padding: 13px 24px;
+	font-size: 15px;
+}
+.btn.outline-btn {
+	border: 1px solid #4a4438;
+	color: var(--td-ink-2);
+	text-decoration: none;
+	padding: 13px 24px;
+	font-size: 15px;
+}
+
+.scroll-x {
+	overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+	.band,
+	.page-head {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.band {
+		padding-top: 56px;
+		padding-bottom: 56px;
+	}
+	.page-head {
+		padding-top: 52px;
+	}
+	.h2 {
+		font-size: 30px;
+	}
+}
