@@ -93,6 +93,9 @@ export const SUBMIT = `{
       "additional_info": {
         "submission_client": "tapedeck-test",
         "duration_ms": 210000,
+        "recording_mbid": "8f3471b5-7e6a-4d3c-9d28-1f0c0f0b0a11",
+        "release_group_mbid": "b2f1e6c0-3a44-4f5e-8c6d-2a9b7e5c1d33",
+        "work_mbid": "c41d0e2a-55b7-4a19-bf3e-6d8c2f7a4e90",
         "tapedeck_audio": {
           "format_type": "pcm", "codec": "FLAC",
           "sample_rate": 44100, "bit_depth": 16,

@@ -131,8 +131,9 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 	<div class="wrap">
 		<h2 class="h2 mid">Submitting a listen with everything attached</h2>
 		<p class="para sm wide-64 mt-xs">
-			Beyond the ListenBrainz spec, three extended objects live in <code>additional_info</code> and
-			round-trip intact. This is the shape a plugin writes.
+			Three extended objects live in <code>additional_info</code> beyond the ListenBrainz spec and
+			round-trip intact — alongside the spec's own MusicBrainz ids, which are stored in full rather
+			than the two or three most clients bother with. This is the shape a plugin writes.
 		</p>
 		<div class="code-panel pre mt">{SUBMIT}</div>
 		<div class="grid-260 mt-sm">
@@ -148,6 +149,14 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 				<p class="card-body">
 					Player name, platform, machine id and — the useful one — <code>output_device</code>. Every
 					distinct output is auto-learned and mapped to a chain once.
+				</p>
+			</div>
+			<div class="card elev-sm">
+				<div class="card-title">MusicBrainz ids</div>
+				<p class="card-body">
+					Plain ListenBrainz fields, but the tagged-file ones no media server exposes:
+					<code>release_group_mbid</code> groups the reissues, <code>work_mbid</code> ties every
+					performance of one composition together. Send them if your files carry them.
 				</p>
 			</div>
 			<div class="card elev-sm">

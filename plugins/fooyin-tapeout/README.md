@@ -40,7 +40,8 @@ It runs alongside your other scrobbling services rather than replacing them.
 ## Requirements
 
 fooyin 0.12.6 or newer **and its development files**, Qt 6.4+, CMake 3.19+ and a
-C++23 compiler.
+C++23 compiler. Any Tapedeck will take the listens; **0.114.0** is where the
+last of the fields Tapeout sends stopped being dropped on arrival.
 
 Fedora packages the headers as `fooyin-devel` in the official repositories. No
 other distribution currently packages fooyin at all — its `.deb`, AppImage,
@@ -91,17 +92,29 @@ Tapedeck instance. Both submit the same listen at the same timestamp, Tapedeck
 deduplicates them, and whichever arrives second is dropped — so leaving both on
 risks discarding the richer payload.
 
-## What Tapedeck does with it, and what it doesn't yet
+## What Tapedeck does with it
 
-Tapeout sends more than Tapedeck currently stores. Recording, release and artist
-ids land. The **release-group, release-track, work and album-artist ids are
-columns being added to Tapedeck right now** — until that lands they are
-submitted and dropped on the floor. That is a Tapedeck gap rather than a plugin
-one, and release-group is the one worth waiting for: it is what groups a
-reissue, a remaster and a regional edition into a single release.
+Everything Tapeout sends is now stored. That took work on the Tapedeck end:
+until **0.114.0** the release-group, release-track, work and album-artist ids
+were accepted and dropped, and release-group had in fact been parsed and thrown
+away for months across three separate sources. Run 0.114.0 or newer and the
+full set lands.
+
+The last three of those only ever come from a tagging client — no media server
+surfaces them and no backfill goes looking — so on any other source they are
+not late, they are unavailable. **Work** is the one that repays the most:
+one composition spans dozens of recordings by different performers, and nothing
+else relates them.
 
 Tapeout omits an empty id rather than sending a blank, so a missing field always
-means "not tagged", never "tagged empty".
+means "not tagged", never "tagged empty". Nothing backfills listens submitted
+before 0.114.0 — the ids were never written, so there is nothing to recover.
+
+Two other things 0.114.0 fixed that a Tapeout user would have met: a skip and a
+listen of the same track at the same second collided on the same id, and the
+second one was answered as a duplicate with no row written; and a listen that
+arrived with a codec and nothing else was never classified, so a FLAC scored 30
+out of 100 rather than 80. Existing rows were rescored.
 
 ## Licence
 
