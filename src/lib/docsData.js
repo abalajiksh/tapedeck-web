@@ -28,7 +28,7 @@ export const CLIENTS = [
 			'URL: http://your-server:8080',
 			'Tick Relay listens on that token in Tapedeck'
 		],
-		note: 'fooyin labels every scrobble it sends as an import, so its listens arrive but go no further until Relay listens is ticked. Leave it off if fooyin already scrobbles to Last.fm directly, or you will get each listen twice. A native plugin, fooyin-tapeout, is in development.',
+		note: 'This is the generic path. Tapeout, a native fooyin plugin, now works and sends the decoded format, the output device and real skips as well — see the plugins page. On this path fooyin labels every scrobble it sends as an import, so its listens arrive but go no further until Relay listens is ticked. Leave it off if fooyin already scrobbles to Last.fm directly, or you will get each listen twice.',
 		code: `Settings
   └─ Integrations
        └─ Scrobbling → Services
@@ -38,6 +38,25 @@ export const CLIENTS = [
 
 Tapedeck → Settings → API Tokens
   ☑ Relay listens`
+	},
+	{
+		label: 'Tapeout',
+		name: 'fooyin + Tapeout',
+		steps: [
+			'Build and install the plugin against fooyin 0.12.6+',
+			'Settings → Integrations → Tapedeck',
+			'Tick Enabled, paste the URL and a submit token, press Test',
+			"Turn fooyin's own ListenBrainz service off"
+		],
+		note: "The native plugin, and the richer of the two paths: the format fooyin actually decoded, the output device, skips submitted as skips, and the MusicBrainz ids a generic scrobbler drops. Nothing is sent until Enabled is ticked, so a passing Test alone produces no listens. Run only one of the two paths — both submit the same listen at the same timestamp, and the second one in is deduplicated away, which can be the richer one. Working on Fedora 44; other platforms are untested rather than unsupported.",
+		code: `Settings
+  └─ Integrations
+       └─ Tapedeck
+            ☑ Enabled
+            URL:   http://your-server:8080
+            Token: td_…
+
+✓ Test → token valid, scope: submit`
 	},
 	{
 		label: 'curl',

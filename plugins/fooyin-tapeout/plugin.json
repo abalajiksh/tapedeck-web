@@ -3,9 +3,9 @@
   "by": "by abalajiksh",
   "kind": "Player plugin",
   "category": "Players",
-  "status": "dev",
-  "summary": "A native Tapedeck plugin for fooyin, so the player reports what the ListenBrainz wire format has no field for. Under active development and not yet tested — fooyin already scrobbles to Tapedeck over the generic ListenBrainz path in the meantime.",
-  "adds": "Output device, decoded format and chain tagging straight from the player",
+  "status": "shipped",
+  "summary": "A native Tapedeck plugin for fooyin, so the player reports what the ListenBrainz wire format has no field for. Early but working — listens, skips, now-playing and an offline queue that survives a restart have all been exercised against a real fooyin 0.12.6 and a live Tapedeck, on one configuration: Fedora 44 (Sway), x86-64.",
+  "adds": "Measured audio quality, the output device and real skips today; the MusicBrainz work and release-group ids a generic scrobbler drops, as soon as Tapedeck has columns for them",
   "link": "https://github.com/abalajiksh/fooyin-tapeout",
   "linkLabel": "View on GitHub",
   "order": 10

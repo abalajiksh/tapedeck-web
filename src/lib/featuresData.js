@@ -71,12 +71,12 @@ export const SOURCES = [
 		name: 'Scrobble clients',
 		status: 'Tested',
 		ok: true,
-		body: 'Anything speaking the ListenBrainz Core API: Pano Scrobbler across Walkman, Android and desktop Linux via MPRIS; Web Scrobbler; multi-scrobbler; mpdscribble; fooyin.',
+		body: 'Anything speaking the ListenBrainz Core API: Pano Scrobbler across Walkman, Android and desktop Linux via MPRIS; Web Scrobbler; multi-scrobbler; mpdscribble; fooyin — which also has a native plugin, Tapeout, that carries the decoded format and the output device the generic path has no field for.',
 		body2: 'Issue one token per app and give each a default chain — attribution then costs the client no configuration at all, and the chain can be repointed later without re-issuing the credential.',
 		facts: [
 			['Setup', 'A URL and a td_ token'],
 			['Extended fields', 'Quality, device, chain, session'],
-			['fooyin note', 'Labels everything an import — tick Relay listens'],
+			['fooyin note', 'Tapeout is the native path; the generic one needs Relay listens'],
 			['Scope needed', 'submit']
 		]
 	}

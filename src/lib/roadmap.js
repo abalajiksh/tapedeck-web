@@ -14,7 +14,7 @@ export const APPS = [
 export const ROADMAP = [
 	{ status: 'dev', title: 'Docker deployment', body: 'A published container image so the server can be run without a Rust toolchain and Bun on the host.' },
 	{ status: 'dev', title: 'Audio analysis plugin', body: 'Multidimensional features from real files, via Plex, Jellyfin and the OpenSubsonic API — replacing the Every Noise placeholder behind the Genre Map and Playlist Lab.' },
-	{ status: 'dev', title: 'Player plugins', body: 'fooyin (tapeout) in development, a Navidrome plugin under way, SONE for TIDAL on Linux queued.' },
+	{ status: 'dev', title: 'Player plugins', body: 'fooyin (Tapeout) works today on Fedora and wants reports from other platforms, a Navidrome plugin is under way, SONE for TIDAL on Linux is queued.' },
 	{ status: 'planned', title: 'Android app', body: 'Browse, scan a barcode onto the shelf, and scrobble directly — contributing the one thing only Android can: which output device the audio actually left through.' },
 	{ status: 'planned', title: 'Desktop and TV apps', body: 'macOS, Windows, Apple TV and Fire TV — each usable as a client or as a standalone instance, with users and secrets shared between instances and the self-hosted server as the source of truth.' },
 	{ status: 'planned', title: 'Federating outward', body: 'Actors, WebFinger, outbox and a signature-verifying inbox already serve. Sending is what remains, and identity has to be right before anyone caches a copy of it.' },

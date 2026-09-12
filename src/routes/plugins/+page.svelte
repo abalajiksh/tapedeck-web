@@ -29,7 +29,8 @@
 			for: the output device, the real signal path, the file that was actually decoded.
 		</p>
 		<p class="sub">
-			Every status below is honest. Most of this is in development, and the page says which.
+			Every status below is honest. Some of it works today, plenty of it does not yet, and the page
+			says which is which.
 		</p>
 	</div>
 </header>

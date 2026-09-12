@@ -193,10 +193,10 @@
 		{
 			name: 'fooyin-tapeout',
 			slug: 'fooyin-tapeout',
-			status: 'In development',
-			statusBg: 'var(--color-accent-200)',
-			statusFg: 'var(--color-accent-800)',
-			body: 'A native plugin for fooyin, reporting the output device and decoded format the wire format has nowhere to put. Untested so far — fooyin already scrobbles over the generic path meanwhile.'
+			status: 'Shipped',
+			statusBg: 'var(--color-accent-2-200)',
+			statusFg: 'var(--color-accent-2-800)',
+			body: 'A native plugin for fooyin, reporting the output device, the decoded format and real skips the wire format has nowhere to put. Working — listens, skips and an offline queue exercised against a live deck, on Fedora 44 so far.'
 		},
 		{
 			name: 'Navidrome plugin',
@@ -988,7 +988,7 @@
 		<p class="para wide">
 			A plugin exists where the wire format runs out — where a player knows the output device, the
 			real signal path or the file that was actually decoded, and there is no field to put it in.
-			Some are shipped, most are in development, and the page says which.
+			Some are shipped, some are still being written, and the page says which.
 		</p>
 		<div class="teasers">
 			{#each PLUGIN_TEASERS as p (p.name)}
