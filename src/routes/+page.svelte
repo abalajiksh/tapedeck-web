@@ -1050,11 +1050,11 @@
 				<a class="btn outline big" href="/docs/">Quickstart &amp; API</a>
 			</div>
 			<p class="fine light">
-				Requires Rust 1.85+ and Bun; a Docker image is in development.
-				<strong class="ink-2"
-					>demo.tapedeck.cc runs the real binary on a passively-cooled Raspberry Pi Zero 2 W with a 64
-					GB SD card</strong
-				> — that is the whole hardware requirement.
+				Requires Rust 1.85+ and Bun to build; a Docker image is in development.
+				<strong class="ink-2">512 MB of RAM and four ARM cores</strong> is the whole hardware
+				requirement — not an estimate, but what demo.tapedeck.cc runs the real binary on: a
+				passively-cooled Raspberry Pi Zero 2 W with a 64 GB SD card. Build it somewhere larger and
+				copy the binary over.
 			</p>
 		</div>
 		<div class="term">

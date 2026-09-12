@@ -78,9 +78,11 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 			<div class="little">
 				<div class="little-t">It runs on very little</div>
 				<p class="little-b">
-					The public demo at <a href="https://demo.tapedeck.cc" rel="noopener">demo.tapedeck.cc</a> is
-					a Raspberry Pi Zero 2 W with a 64 GB SD card, passively cooled. One binary, one SQLite file,
-					no fan.
+					<strong>512 MB of RAM and four ARM cores.</strong> The public demo at
+					<a href="https://demo.tapedeck.cc" rel="noopener">demo.tapedeck.cc</a> is a Raspberry Pi
+					Zero 2 W with a 64 GB SD card, passively cooled — one binary, one SQLite file, no fan. That
+					is the running requirement; <em>building</em> on it is another matter, so compile
+					elsewhere and copy the binary across.
 				</p>
 			</div>
 		</div>
