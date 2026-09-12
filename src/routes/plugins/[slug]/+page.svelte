@@ -153,6 +153,17 @@
 	.prose :global(th) {
 		font-weight: 700;
 	}
+	/* A screenshot shipped beside the README. Bordered rather than bare, because
+	   most of these are UI captures whose own edge is the same colour as the
+	   page and would otherwise bleed into it. */
+	.prose :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin: 24px 0;
+		border: 1px solid var(--color-divider);
+		border-radius: 14px;
+	}
 	.prose :global(blockquote) {
 		margin: 20px 0;
 		padding-left: 18px;

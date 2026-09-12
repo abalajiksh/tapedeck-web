@@ -67,10 +67,21 @@ Full build instructions, including the Debian and Ubuntu path, are in the
 
 ## Setting it up
 
-**fooyin → Settings → Integrations → Tapedeck.** Tick **Enabled**, enter your
-Tapedeck address and a token with the `submit` scope, then press **Test**.
-Nothing is submitted until **Enabled** is ticked, so a passing **Test** alone
-will not produce listens.
+Everything lives on one page: **fooyin → Settings → Integrations → Tapedeck**.
+
+![The Tapeout settings page in fooyin: a Server group with the Send listens to Tapedeck checkbox, an address, a token and a Test button, and a Report group with checkboxes for audio quality, output device and skipped tracks, plus a signal chain field.](settings.png)
+
+Tick **Send listens to Tapedeck**, enter your address and a token with the
+`submit` scope, then press **Test**. Nothing is submitted until that box is
+ticked, so a passing **Test** alone will not produce listens — it reports who
+the token belongs to and which Tapedeck it reached, and warns you if the scopes
+are wrong rather than leaving you to find out from a 403 later.
+
+Each thing Tapeout contributes is its own switch under **Report**, so you can
+send the listens without the hardware detail if you would rather. **Signal
+chain** is the override: leave it empty and Tapedeck resolves the chain from the
+output device, which is the arrangement worth having. Set it and it must match a
+chain name exactly.
 
 The token is stored in plaintext in `~/.config/fooyin/fooyin.conf`, the same way
 fooyin's own scrobbler stores its credentials.

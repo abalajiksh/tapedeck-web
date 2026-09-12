@@ -45,18 +45,25 @@ Tapedeck → Settings → API Tokens
 		steps: [
 			'Build and install the plugin against fooyin 0.12.6+',
 			'Settings → Integrations → Tapedeck',
-			'Tick Enabled, paste the URL and a submit token, press Test',
+			'Tick Send listens to Tapedeck, paste the URL and a submit token',
+			'Press Test — it names the token and warns on a wrong scope',
 			"Turn fooyin's own ListenBrainz service off"
 		],
-		note: "The native plugin, and the richer of the two paths: the format fooyin actually decoded, the output device, skips submitted as skips, and the MusicBrainz ids a generic scrobbler drops. Nothing is sent until Enabled is ticked, so a passing Test alone produces no listens. Run only one of the two paths — both submit the same listen at the same timestamp, and the second one in is deduplicated away, which can be the richer one. Working on Fedora 44; other platforms are untested rather than unsupported.",
+		note: "The native plugin, and the richer of the two paths: the format fooyin actually decoded, the output device, skips submitted as skips, and the MusicBrainz ids a generic scrobbler drops. Each of those is its own switch, and nothing is sent until the top box is ticked, so a passing Test alone produces no listens. Run only one of the two paths — both submit the same listen at the same timestamp, and the second one in is deduplicated away, which can be the richer one. Working on Fedora 44; other platforms are untested rather than unsupported.",
 		code: `Settings
   └─ Integrations
        └─ Tapedeck
-            ☑ Enabled
-            URL:   http://your-server:8080
-            Token: td_…
+            Server
+              ☑ Send listens to Tapedeck
+              Address: http://your-server:8080
+              Token:   td_…
+            Report
+              ☑ Audio quality
+              ☑ Output device
+              ☑ Skipped tracks
+              Signal chain: (empty — resolve from device)
 
-✓ Test → token valid, scope: submit`
+✓ Connected as you — Tapedeck <version>`
 	},
 	{
 		label: 'curl',

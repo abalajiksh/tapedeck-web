@@ -4,14 +4,24 @@ import { marked } from 'marked';
  * The plugin registry.
  *
  * Adding a plugin means adding a folder under `/plugins/<slug>/` — a
- * `plugin.json` and, optionally, a `README.md`. Nothing else in the site is
- * edited: the listing, the category filter and the `/plugins/<slug>` route all
- * derive from what this glob finds. Both globs are resolved by Vite at build
- * time, so a malformed entry fails `bun run build` rather than a page load, and
- * `marked` never reaches the browser.
+ * `plugin.json`, optionally a `README.md`, and any screenshots that README
+ * points at. Nothing else in the site is edited: the listing, the category
+ * filter and the `/plugins/<slug>` route all derive from what these globs find.
+ * All three are resolved by Vite at build time, so a malformed entry fails
+ * `bun run build` rather than a page load, and `marked` never reaches the
+ * browser.
  */
 const manifests = import.meta.glob('/plugins/*/plugin.json', { eager: true, import: 'default' });
 const readmes = import.meta.glob('/plugins/*/README.md', { eager: true, query: '?raw', import: 'default' });
+// Images a plugin ships beside its README. Globbed as `?url` so Vite emits each
+// one into the client build and hands back the fingerprinted path — which is
+// why a README writes `![…](settings.png)` and never a hard-coded `/…` URL it
+// would have to keep in sync with the build output.
+const media = import.meta.glob('/plugins/*/*.{png,jpg,jpeg,webp,avif,svg,gif}', {
+	eager: true,
+	query: '?url',
+	import: 'default'
+});
 
 /** Display label and card tinting per status. Order here is the listing order. */
 export const STATUS = {
@@ -32,6 +42,34 @@ const REQUIRED = ['name', 'kind', 'category', 'status', 'summary'];
 
 function slugOf(path) {
 	return path.split('/').at(-2);
+}
+
+/**
+ * Render a plugin's README, resolving relative image paths against its own
+ * folder. An image the glob didn't find throws rather than rendering a broken
+ * `<img>` — a screenshot that silently 404s on the deployed site is worse than
+ * a build that stops and names the file.
+ */
+function renderReadme(slug, md) {
+	const renderer = new marked.Renderer();
+	const image = renderer.image.bind(renderer);
+
+	renderer.image = (token) => {
+		const src = token.href ?? '';
+		if (!/^(https?:)?\/\//.test(src) && !src.startsWith('/') && !src.startsWith('data:')) {
+			const resolved = media[`/plugins/${slug}/${src}`];
+			if (!resolved) {
+				throw new Error(
+					`plugins/${slug}/README.md references "${src}", which is not a file in plugins/${slug}/`
+				);
+			}
+			token.href = resolved;
+		}
+		// Every one of these sits below the fold, under the card details.
+		return image(token).replace('<img', '<img loading="lazy" decoding="async"');
+	};
+
+	return marked.parse(md, { renderer });
 }
 
 function validate(slug, m) {
@@ -69,7 +107,7 @@ function build() {
 			// A README is what earns a detail page. Without one there is nothing
 			// to show beyond the card, so the card doesn't link inward.
 			hasPage: Boolean(readme),
-			body: readme ? marked.parse(readme) : ''
+			body: readme ? renderReadme(slug, readme) : ''
 		};
 	});
 

@@ -18,6 +18,7 @@ plugins/
   my-plugin/
     plugin.json     required
     README.md       optional — its presence is what earns a detail page
+    settings.png    optional — any images that README points at
 ```
 
 The folder name is the URL slug, so keep it lowercase and hyphenated.
@@ -72,6 +73,27 @@ the prose rather than repeating the plugin's name as an `# H1`.
 
 Omit the file entirely and the plugin still appears in the listing; its card
 just links straight out to `link` instead of inward.
+
+### Screenshots
+
+Put the image file in the plugin's own folder and reference it by bare filename:
+
+```markdown
+![A screenshot of the plugin's settings page](settings.png)
+```
+
+`png`, `jpg`, `webp`, `avif`, `svg` and `gif` are picked up. Vite fingerprints
+each one into the build, so **write the filename, never a `/`-rooted URL** — the
+deployed path is not the one you typed. Absolute `http(s)` URLs are left alone,
+though an image hosted elsewhere breaks the promise that the site makes no
+third-party request, so ship the file.
+
+A filename that isn't in the folder fails the build and names itself, on the
+same reasoning as everything else here: a screenshot that 404s on the deployed
+site is worse than a build that stops.
+
+Images are rendered full-width in the prose column, which is 760px wide — size
+them for that and crop out the desktop around the window.
 
 ## It fails the build, not the page
 
