@@ -71,12 +71,14 @@
 <style>
 	/* Indent with a rule rather than padding alone — at four levels deep the
 	   line is the only thing that keeps a property attached to its parent. */
+	/* The gap is on the row itself rather than on `.row.nested + .row.nested`.
+	   Each nested row is a separate component instance, so Svelte cannot prove
+	   the sibling relationship at compile time and strips the rule as unused —
+	   the spacing silently never applied. */
 	.row.nested {
 		margin-left: 10px;
 		padding-left: 14px;
 		border-left: 1px solid var(--color-divider);
-	}
-	.row.nested + .row.nested {
 		margin-top: 2px;
 	}
 	.head {
