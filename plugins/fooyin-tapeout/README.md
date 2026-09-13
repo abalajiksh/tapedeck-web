@@ -107,7 +107,10 @@ Full build instructions, including the Debian and Ubuntu path, are in the
 ## Setting it up
 
 Everything lives on one page: **fooyin → Settings → Integrations → Tapedeck**.
-Tick **Enabled**, enter your Tapedeck address, and then take the short path.
+Tick **Send listens to Tapedeck**, enter your address, and then take the short
+path.
+
+![The Tapeout settings page in fooyin. A Server group with the Send listens to Tapedeck checkbox, an address, a token, and Test and Pair buttons. A Report group with checkboxes for audio quality, output device, skipped tracks, lyrics, cover art and loves, a Stars to love at field, and a Signal chain picker reading "Resolved by Tapedeck". A Check group with a Preview current track button, reporting that the "default" output has no chain assigned and that a play counts as a listen at 50% or 4:00.](settings.png)
 
 **Pair, don't paste.** Press **Pair…**, and fooyin shows a short code you
 approve in Tapedeck under Settings → Connections. The token arrives already
@@ -118,8 +121,8 @@ still works; **Test** reports who the token belongs to, which Tapedeck it
 reached, and warns about missing scopes rather than leaving you to find out from
 a 403.
 
-Nothing is submitted until **Enabled** is ticked, so a passing **Test** alone
-will not produce listens.
+Nothing is submitted until **Send listens to Tapedeck** is ticked, so a passing
+**Test** alone will not produce listens.
 
 Each thing Tapeout contributes is its own switch, so you can send the listens
 without the hardware detail if you would rather. **Signal chain** is a picker fed
@@ -127,12 +130,18 @@ from the chains you actually have, not a free-text field — leave it unset and
 Tapedeck resolves the chain from the output device, which is the arrangement
 worth having.
 
-**Preview current track** submits what is playing as a dry run: Tapedeck
-resolves everything, stores nothing, and reports your quality score, **which
-rung of the chain ladder won**, whether the listen would be forwarded onward,
-and whether it would be deduplicated. None of that is visible from an ordinary
-successful submit, which is why guessing at a chain was the old way to get it
-wrong.
+The **Check** panel answers the two questions you would otherwise only discover
+from the data days later. It states your deck's actual scrobble threshold —
+"counts as a listen at 50% or 4:00" — so the number being obeyed is on screen
+rather than assumed, and it says whether the output you are playing through
+resolves to a chain or to nothing.
+
+**Preview current track** goes further: it submits what is playing as a dry run,
+so Tapedeck resolves everything, stores nothing, and reports your quality score,
+**which rung of the chain ladder won**, whether the listen would be forwarded
+onward, and whether it would be deduplicated. None of that is visible from an
+ordinary successful submit, which is why guessing at a chain was the old way to
+get it wrong.
 
 The token is stored in plaintext in `~/.config/fooyin/fooyin.conf`, the same way
 fooyin's own scrobbler stores its credentials.
