@@ -285,35 +285,95 @@
 			</div>
 		</div>
 		<div class="callout">
-			<div class="callout-t">The sidecar that would lift the genre map's ceiling — connected, not yet read</div>
+			<div class="callout-t">A week, a month or a year can be shared as an image, drawn on the server</div>
 			<p class="callout-b">
-				Genres attach to artists, so on the map every track by one artist sits at the same point.
-				The fix is a vector per <em>recording</em>, and Tapedeck cannot derive one from listens — it
-				never hears the audio. Two things can:
-				<a href="/plugins/audio-analysis/">the first-party analysis plugin</a>, pure DSP and built to
-				run on the same small hardware Tapedeck does, and
-				<a href="/plugins/audiomuse-ai/">AudioMuse-AI</a>, which uses learned embeddings and wants a
-				machine of its own. Different trades, not competitors.
-			</p>
-			<p class="callout-b">
-				AudioMuse-AI exists today, and Tapedeck can already talk to it —
-				<strong>but what that gives you is a measurement, not a feature.</strong> Nothing reads the
-				vectors yet. What Tapedeck reports is how much of your history could ever be joined to them:
-				a listen matches on a media-server track id, so anything imported from Spotify or Last.fm has
-				nothing to join on, however much gets analysed. That number is built first on purpose — it
-				decides whether the rest is worth building, and it differs enormously between a history
-				streamed from a media server and one assembled from imports.
+				Story, square or wide — and each period gets its own composition rather than one card
+				relabelled. A week draws by-day bars and no genre split, because seven days make a thin one;
+				a year draws by-month bars and genre bands instead. The fonts are embedded in the binary and
+				nothing is fetched, so the same period produces the same picture from any client, and a phone
+				app asks <code>GET /api/v1/reports/image</code> rather than reimplementing a layout that would
+				drift from this one.
 			</p>
 		</div>
+	</div>
+</section>
 
-		<div class="callout">
-			<div class="callout-t">A month can be shared as an image, and it is drawn on the server</div>
-			<p class="callout-b">
-				Story, square or wide. The fonts are embedded in the binary and nothing is fetched, so the
-				same month produces the same picture from any client — and a phone app asks
-				<code>GET /api/v1/reports/image</code> rather than reimplementing a layout that would drift from
-				this one.
+<section id="sonic" class="band surface">
+	<div class="wrap">
+		<span class="eyebrow">Per-recording sound</span>
+		<h2 class="h2">The ceiling on that map, and the two ways past it</h2>
+		<p class="para wide mt-sm">
+			Every Noise places <em>artists</em>. Lifting that needs a coordinate per <em>recording</em>, and
+			Tapedeck cannot work one out — it reads what your server reports about a play, never the audio
+			itself. Two things can, and they are different trades rather than competitors.
+		</p>
+
+		<div class="routes mt">
+			<article class="route">
+				<div class="route-head">
+					<h3 class="route-name">Analysis plugin</h3>
+					<span class="tag route-tag">First-party</span>
+				</div>
+				<p class="route-body">
+					Sits beside your library, reachable through Plex, Jellyfin or OpenSubsonic, and decodes
+					the files where the bandwidth already is.
+				</p>
+				<div class="col tight">
+					<div class="fact"><span class="fact-k">Method</span><span class="fact-v">Pure DSP — no machine learning</span></div>
+					<div class="fact"><span class="fact-k">Runs on</span><span class="fact-v">The hardware Tapedeck already runs on</span></div>
+					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">In development</span></div>
+				</div>
+				<a class="route-link" href="/plugins/audio-analysis/">How it will work →</a>
+			</article>
+
+			<article class="route">
+				<div class="route-head">
+					<h3 class="route-name">AudioMuse-AI</h3>
+					<span class="tag route-tag alt">Third-party</span>
+				</div>
+				<p class="route-body">
+					Points at your media server and works out how each recording sounds — embeddings, tempo,
+					key, energy, mood and six continuous axes.
+				</p>
+				<div class="col tight">
+					<div class="fact"><span class="fact-k">Method</span><span class="fact-v">Learned audio embeddings</span></div>
+					<div class="fact"><span class="fact-k">Runs on</span><span class="fact-v">4 cores and 8 GB — a machine of its own</span></div>
+					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">Connected, not yet read</span></div>
+				</div>
+				<a class="route-link" href="/plugins/audiomuse-ai/">What Tapedeck does with it →</a>
+			</article>
+		</div>
+
+		<div class="today">
+			<p class="today-t">
+				Tapedeck can talk to AudioMuse-AI today — and what that gives you is a
+				<strong>measurement, not a feature.</strong> Nothing reads the vectors yet. What it reports is
+				how much of your history could ever be joined to them, in three parts kept separate, because
+				one number would flatter itself.
 			</p>
+			<ol class="steps">
+				<li>
+					<span class="step-n">1</span>
+					<span class="step-b"
+						>How much <em>could</em> ever match. A listen joins on a media-server track id, so an
+						imported one has nothing to join on — however much gets analysed.</span
+					>
+				</li>
+				<li>
+					<span class="step-n">2</span>
+					<span class="step-b"
+						>How much has been analysed, weighted by plays. A track played fifty times is worth
+						fifty of one played once.</span
+					>
+				</li>
+				<li>
+					<span class="step-n">3</span>
+					<span class="step-b"
+						>What share of your listening that sample was, so the figure above is never read as a
+						fact about the whole history.</span
+					>
+				</li>
+			</ol>
 		</div>
 	</div>
 </section>
@@ -591,6 +651,101 @@
 	}
 	.fact-v {
 		font-size: 13.5px;
+	}
+
+	/* per-recording sound — two routes, side by side so the trade is the
+	   first thing read rather than a paragraph you have to hold in your head */
+	.routes {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 22px;
+	}
+	.route {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		padding: 26px;
+		border-radius: 26px;
+		background: var(--color-bg);
+		border: 1px solid var(--color-divider);
+	}
+	.route-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	.route-name {
+		font-family: var(--font-heading);
+		font-weight: var(--font-heading-weight);
+		font-size: 23px;
+		margin: 0;
+	}
+	.route-tag {
+		background: var(--color-neutral-200);
+		color: var(--color-neutral-800);
+		flex: none;
+	}
+	.route-tag.alt {
+		background: var(--color-accent-2-200);
+		color: var(--color-accent-2-800);
+	}
+	.route-body {
+		margin: 0;
+		font-size: 15px;
+		color: var(--color-neutral-700);
+		text-wrap: pretty;
+	}
+	.route-link {
+		margin-top: auto;
+		font-size: 14px;
+		text-decoration: none;
+	}
+	.today {
+		margin-top: 22px;
+		padding: 26px 30px;
+		border-radius: 26px;
+		background: var(--td-band-2);
+		border: 1px solid var(--td-band-2-edge);
+	}
+	.today-t {
+		margin: 0;
+		font-size: 15.5px;
+		color: var(--td-band-2-ink);
+		max-width: 80ch;
+		text-wrap: pretty;
+	}
+	.steps {
+		list-style: none;
+		counter-reset: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 16px;
+		margin: 20px 0 0;
+		padding: 0;
+	}
+	.steps li {
+		display: flex;
+		gap: 11px;
+		align-items: flex-start;
+	}
+	.step-n {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 23px;
+		height: 23px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--td-band-2-ink) 14%, transparent);
+		color: var(--td-band-2-ink);
+		font-size: 12px;
+		font-weight: 600;
+	}
+	.step-b {
+		font-size: 14px;
+		color: var(--td-band-2-ink);
+		opacity: 0.88;
+		text-wrap: pretty;
 	}
 
 	/* quality */
