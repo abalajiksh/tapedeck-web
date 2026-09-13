@@ -386,11 +386,14 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 		background: #332f27;
 	}
 	/* The global link colour is accent-700, which is nearly the background on
-	   this band. Lift it up the ramp rather than leaving it unreadable. */
-	.band.dark a {
+	   this band. Lift it up the ramp rather than leaving it unreadable.
+	   `:not(.btn)` is load-bearing: a button is an <a> too, and this selector
+	   outranks .btn.accent-btn, so without it the CTA below ends up with accent
+	   text on an accent fill. */
+	.band.dark a:not(.btn) {
 		color: var(--color-accent-400);
 	}
-	.band.dark a:hover {
+	.band.dark a:not(.btn):hover {
 		color: var(--color-accent-300);
 	}
 

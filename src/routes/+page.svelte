@@ -1323,6 +1323,10 @@
 	.cta-row {
 		display: flex;
 		flex-wrap: wrap;
+		/* Buttons size to their own text. Without this they stretch to the
+		   tallest item on the line, so one button carrying a margin makes the
+		   others grow to match it. */
+		align-items: center;
 		gap: 12px;
 		margin-top: 32px;
 	}
@@ -1735,6 +1739,12 @@
 	.band.dark .accent-btn {
 		display: inline-block;
 		margin-top: 26px;
+	}
+	/* That margin is for an accent button standing alone after a paragraph. In
+	   a button row it also pushed the button 26px below its neighbours, which
+	   is what made the demo button look broken. */
+	.band.dark .cta-row .accent-btn {
+		margin-top: 0;
 	}
 	.panel-dark {
 		border-radius: 30px;
