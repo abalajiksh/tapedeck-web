@@ -7,7 +7,8 @@
 		{ href: '/shelf/', label: 'The Shelf' },
 		{ href: '/patch/', label: 'Patch' },
 		{ href: '/plugins/', label: 'Plugins' },
-		{ href: '/docs/', label: 'Docs' }
+		{ href: '/docs/', label: 'Docs' },
+		{ href: '/api/', label: 'API' }
 	];
 
 	// /plugins/<slug> should still light up the Plugins link.

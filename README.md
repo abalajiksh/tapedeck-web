@@ -139,6 +139,7 @@ which is why this uses `@sveltejs/adapter-static` rather than
 
 ```
 plugins/            the plugin registry — one folder per plugin
+spec/               openapi.yaml, synced from the app repo on each release tag
 src/
   fonts.css         self-hosted @font-face rules
   app.css           the Organic design system, verbatim
@@ -168,6 +169,32 @@ The practical consequence: **it is only as fresh as the last deploy.** Every pus
 here and every merged plugin PR refreshes it. If you tag a release on Codeberg
 and want the site to follow without a commit here, trigger a rebuild of the
 Cloudflare project from the release pipeline.
+
+### The API reference
+
+`/api/` renders `spec/openapi.yaml` — 279 operations across 221 paths, one page
+per tag, every one prerendered. `src/lib/openapi.server.js` parses it at build
+time; it is a `.server.js` so neither `yaml` nor 465KB of spec text reaches the
+browser.
+
+**The spec is a copy, and it is machine-written.** The original lives at the
+root of the [application repo](https://codeberg.org/abksh/tapedeck), and the
+`tapedeck-spec-sync` Jenkins job copies it here on every release tag — that
+push is what makes Cloudflare rebuild. Don't hand-edit it; the next release
+overwrites it. See [`spec/README.md`](spec/README.md) for why it is vendored
+rather than fetched at build time, and how to refresh it by hand.
+
+The page reports the spec's own `info.version`, not the tag that
+`version.server.js` reads — it must not claim to describe a version it doesn't.
+The genuinely authoritative answer is a deck's own `GET /api/openapi.yaml`,
+which the page says.
+
+A malformed spec **fails the build**, naming the problem: an unresolvable
+`$ref`, a `$ref` cycle, an operation with no summary. A tag used but never
+declared in the spec's `tags:` list only warns, and its endpoints are appended
+under a heading with no description — dropping them, or refusing to build the
+whole site, would both be worse when the file arrives from a job in another
+repo. As of v0.115.1 that catches `Profile`.
 
 ### The 404 page
 

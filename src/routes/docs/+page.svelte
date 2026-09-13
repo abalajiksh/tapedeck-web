@@ -208,6 +208,9 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 					<code>GET /api/openapi.yaml</code>, deliberately unauthenticated — it documents shapes, not
 					data, and a client has to read it before it has a credential. A drift test walks every route
 					in both directions, so the build fails rather than sending you to an endpoint that 404s.
+					The same document is rendered here as the <a href="/api/">API reference</a>
+					— every endpoint and the auth it takes. Ask your own deck rather than this page when the two
+					could differ: it is the only thing that knows what version it is running.
 				</p>
 				<h3 class="h3 ink spaced">Credentials at rest</h3>
 				<p class="para ink-2 sm-plus">
@@ -381,6 +384,14 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 	}
 	.band.dark code {
 		background: #332f27;
+	}
+	/* The global link colour is accent-700, which is nearly the background on
+	   this band. Lift it up the ramp rather than leaving it unreadable. */
+	.band.dark a {
+		color: var(--color-accent-400);
+	}
+	.band.dark a:hover {
+		color: var(--color-accent-300);
 	}
 
 	/* ── code panels ──────────────────────────────────── */
