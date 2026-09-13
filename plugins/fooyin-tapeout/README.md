@@ -34,14 +34,52 @@ Treat other platforms as untested rather than unsupported.
   release-group, release-track, **work** and artist/album-artist, plus ISRC,
   wherever the file carries them. The work id is the one that ties every
   performance of the same piece together, which matters most for classical.
+- **Loves, from your star ratings.** Rate a track past the threshold and
+  Tapedeck loves it, and mirrors that out to Last.fm and ListenBrainz. Drop the
+  rating and the love is withdrawn.
 
 It runs alongside your other scrobbling services rather than replacing them.
+
+### It follows the deck's rule for when a listen counts
+
+Half the track or four minutes is only the *default*. It has been a per-user
+setting in Tapedeck for a long time, because that convention fits a three-minute
+pop song far better than a forty-minute raga — and until recently no scrobble
+client could learn the number, so every one of them hardcoded Last.fm's
+convention and silently disagreed with the setting.
+
+Tapeout reads it and obeys it. That is not tidiness. Tapedeck applies the same
+threshold in reverse to decide what was a **skip**, so a client that submits
+later than the rule banks a listen *and* leaves a skip behind it, and one that
+submits earlier writes a listen the listener's own setting says never happened.
+
+### Two things that come out of your files
+
+Both are **off by default** and both need a token with the `write` scope.
+
+- **Lyrics** — embedded tags and `.lrc` sidecars, offered as the track starts,
+  so the words are there without waiting on Tapedeck's LRCLIB backfill. They are
+  your tagging of the pressing you actually played, and anything you corrected
+  in Tapedeck is never overwritten: the route refuses to write over an edited
+  row.
+- **Cover art** — the embedded front cover, original bytes, for records Tapedeck
+  has no artwork for. Tapeout asks first and reads the file only if the answer
+  is no, so the common case costs one small request rather than a megabyte of
+  JPEG.
+
+Tapedeck grew the two routes these need in **0.115.0**. Against an older deck
+each ticked box costs a 404 per track and nothing worse.
 
 ## Requirements
 
 fooyin 0.12.6 or newer **and its development files**, Qt 6.4+, CMake 3.19+ and a
-C++23 compiler. Any Tapedeck will take the listens; **0.114.0** is where the
-last of the fields Tapeout sends stopped being dropped on arrival.
+C++23 compiler.
+
+Any Tapedeck will take the listens, but three versions matter: **0.114.0** is
+where the last of the MusicBrainz ids stopped being dropped on arrival,
+**0.115.0** added the lyrics and cover-art routes, and **0.115.1** added the
+endpoint that reports the scrobble threshold. **0.115.1 or newer** gets all of
+it.
 
 Fedora packages the headers as `fooyin-devel` in the official repositories. No
 other distribution currently packages fooyin at all — its `.deb`, AppImage,
@@ -69,20 +107,32 @@ Full build instructions, including the Debian and Ubuntu path, are in the
 ## Setting it up
 
 Everything lives on one page: **fooyin → Settings → Integrations → Tapedeck**.
+Tick **Enabled**, enter your Tapedeck address, and then take the short path.
 
-![The Tapeout settings page in fooyin: a Server group with the Send listens to Tapedeck checkbox, an address, a token and a Test button, and a Report group with checkboxes for audio quality, output device and skipped tracks, plus a signal chain field.](settings.png)
+**Pair, don't paste.** Press **Pair…**, and fooyin shows a short code you
+approve in Tapedeck under Settings → Connections. The token arrives already
+carrying `submit read write` — every scope the plugin can use. A token minted by
+hand cannot have scopes added to it later, which is how a hand-pasted one ends
+up quietly unable to send loves. Pasting a `submit` token and pressing **Test**
+still works; **Test** reports who the token belongs to, which Tapedeck it
+reached, and warns about missing scopes rather than leaving you to find out from
+a 403.
 
-Tick **Send listens to Tapedeck**, enter your address and a token with the
-`submit` scope, then press **Test**. Nothing is submitted until that box is
-ticked, so a passing **Test** alone will not produce listens — it reports who
-the token belongs to and which Tapedeck it reached, and warns you if the scopes
-are wrong rather than leaving you to find out from a 403 later.
+Nothing is submitted until **Enabled** is ticked, so a passing **Test** alone
+will not produce listens.
 
-Each thing Tapeout contributes is its own switch under **Report**, so you can
-send the listens without the hardware detail if you would rather. **Signal
-chain** is the override: leave it empty and Tapedeck resolves the chain from the
-output device, which is the arrangement worth having. Set it and it must match a
-chain name exactly.
+Each thing Tapeout contributes is its own switch, so you can send the listens
+without the hardware detail if you would rather. **Signal chain** is a picker fed
+from the chains you actually have, not a free-text field — leave it unset and
+Tapedeck resolves the chain from the output device, which is the arrangement
+worth having.
+
+**Preview current track** submits what is playing as a dry run: Tapedeck
+resolves everything, stores nothing, and reports your quality score, **which
+rung of the chain ladder won**, whether the listen would be forwarded onward,
+and whether it would be deduplicated. None of that is visible from an ordinary
+successful submit, which is why guessing at a chain was the old way to get it
+wrong.
 
 The token is stored in plaintext in `~/.config/fooyin/fooyin.conf`, the same way
 fooyin's own scrobbler stores its credentials.
@@ -97,8 +147,7 @@ risks discarding the richer payload.
 Everything Tapeout sends is now stored. That took work on the Tapedeck end:
 until **0.114.0** the release-group, release-track, work and album-artist ids
 were accepted and dropped, and release-group had in fact been parsed and thrown
-away for months across three separate sources. Run 0.114.0 or newer and the
-full set lands.
+away for months across three separate sources.
 
 The last three of those only ever come from a tagging client — no media server
 surfaces them and no backfill goes looking — so on any other source they are
@@ -110,11 +159,11 @@ Tapeout omits an empty id rather than sending a blank, so a missing field always
 means "not tagged", never "tagged empty". Nothing backfills listens submitted
 before 0.114.0 — the ids were never written, so there is nothing to recover.
 
-Two other things 0.114.0 fixed that a Tapeout user would have met: a skip and a
-listen of the same track at the same second collided on the same id, and the
-second one was answered as a duplicate with no row written; and a listen that
-arrived with a codec and nothing else was never classified, so a FLAC scored 30
-out of 100 rather than 80. Existing rows were rescored.
+Loves are the one thing Tapeout deliberately does *not* reconcile at startup. A
+love can also come from Tapedeck's own UI or from a Last.fm pull, and a bulk
+pass would read every one of those as unstarred in fooyin and take it away. It
+reacts to ratings you change while fooyin is running; star a track again if you
+want an existing rating pushed.
 
 ## Licence
 
