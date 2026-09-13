@@ -1,6 +1,27 @@
 <script>
 	import { page } from '$app/state';
-	import { toggleTheme } from '$lib/theme.js';
+	import { onMount } from 'svelte';
+	import { toggleTheme, themePref } from '$lib/theme.js';
+
+	// Which of the three states we are in. Read on mount rather than at module
+	// scope because this renders on the server, where there is no localStorage —
+	// and it stays null until then so the markup matches what was prerendered.
+	let pref = $state(null);
+	onMount(() => (pref = themePref()));
+
+	// States the current setting rather than promising what comes next: out of
+	// "system" the next theme depends on what the OS prefers, so any fixed
+	// "click for X" would be wrong half the time.
+	const LABEL = {
+		system: 'Theme: matching your system',
+		dark: 'Theme: dark',
+		light: 'Theme: light'
+	};
+	const label = $derived(pref ? LABEL[pref] : 'Light, dark or match your system');
+
+	function onToggle() {
+		pref = toggleTheme();
+	}
 
 	const links = [
 		{ href: '/features/', label: 'Features' },
@@ -35,9 +56,9 @@
 	<button
 		type="button"
 		class="td-theme-btn"
-		onclick={toggleTheme}
-		title="Light, dark or match your system"
-		aria-label="Switch theme"
+		onclick={onToggle}
+		title={label}
+		aria-label="Switch theme. {label}"
 	>
 		<svg class="td-i-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
 		<svg class="td-i-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z" /></svg>
