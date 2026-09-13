@@ -13,6 +13,18 @@ the OpenSubsonic API — and computes multidimensional features from the actual
 audio files. The server keeps the coordinates; the plugin does the decoding,
 near the files, where the bandwidth already is.
 
+**Pure DSP, and no machine learning anywhere in it.** That is the whole design
+constraint rather than a detail: the features come out of signal processing, so
+it runs on the kind of hardware Tapedeck itself runs on instead of demanding a
+spare desktop. A deck on a Pi Zero 2 W should not need a second machine with
+four cores and 8 GB of RAM to find out how its own music sounds.
+
+[AudioMuse-AI](/plugins/audiomuse-ai/) reaches the same goal from the other
+direction, with learned audio embeddings and the hardware that implies. It
+exists today and Tapedeck can already connect to it; this plugin is the route
+that asks nothing extra of your hardware. They are different trades, not
+competitors.
+
 ## Where the coordinates come from
 
 | | |

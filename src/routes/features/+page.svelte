@@ -260,8 +260,9 @@
 				<p class="card-body">
 					Your listening on Glenn McDonald's map of the genre space, with a taste trajectory over
 					time and the regions bordering what you already play. <strong>A placeholder</strong> until
-					the <a href="/plugins/audio-analysis/">analysis plugin</a> computes per-recording features from
-					your real files.
+					per-recording features are computed from your real files — by the
+					<a href="/plugins/audio-analysis/">analysis plugin</a> or by
+					<a href="/plugins/audiomuse-ai/">AudioMuse-AI</a>.
 				</p>
 			</div>
 			<div class="card elev-sm pad">
@@ -283,6 +284,28 @@
 				</p>
 			</div>
 		</div>
+		<div class="callout">
+			<div class="callout-t">The sidecar that would lift the genre map's ceiling — connected, not yet read</div>
+			<p class="callout-b">
+				Genres attach to artists, so on the map every track by one artist sits at the same point.
+				The fix is a vector per <em>recording</em>, and Tapedeck cannot derive one from listens — it
+				never hears the audio. Two things can:
+				<a href="/plugins/audio-analysis/">the first-party analysis plugin</a>, pure DSP and built to
+				run on the same small hardware Tapedeck does, and
+				<a href="/plugins/audiomuse-ai/">AudioMuse-AI</a>, which uses learned embeddings and wants a
+				machine of its own. Different trades, not competitors.
+			</p>
+			<p class="callout-b">
+				AudioMuse-AI exists today, and Tapedeck can already talk to it —
+				<strong>but what that gives you is a measurement, not a feature.</strong> Nothing reads the
+				vectors yet. What Tapedeck reports is how much of your history could ever be joined to them:
+				a listen matches on a media-server track id, so anything imported from Spotify or Last.fm has
+				nothing to join on, however much gets analysed. That number is built first on purpose — it
+				decides whether the rest is worth building, and it differs enormously between a history
+				streamed from a media server and one assembled from imports.
+			</p>
+		</div>
+
 		<div class="callout">
 			<div class="callout-t">A month can be shared as an image, and it is drawn on the server</div>
 			<p class="callout-b">

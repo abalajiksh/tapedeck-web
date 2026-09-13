@@ -1,0 +1,12 @@
+{
+  "name": "AudioMuse-AI",
+  "by": "by NeptuneHub",
+  "kind": "Sonic sidecar",
+  "category": "Analysis",
+  "status": "dev",
+  "summary": "A separate application that points at your media server and works out how each recording sounds, using learned audio embeddings — the one thing Tapedeck cannot derive from its own data, because it never hears the audio. Tapedeck can connect to it, test it, and measure how much of your history it could ever cover. Nothing reads the vectors yet.",
+  "adds": "Per-recording sound coordinates from learned embeddings, where the first-party plugin takes the pure-DSP route",
+  "link": "https://github.com/NeptuneHub/AudioMuse-AI",
+  "linkLabel": "View on GitHub",
+  "order": 41
+}

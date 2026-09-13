@@ -74,6 +74,10 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 					A Plex, Navidrome, Jellyfin, Emby or Roon server — optional; the ingest API works standalone
 				</div>
 				<div class="req">A ListenBrainz / Last.fm / Libre.fm account — optional, connected per user</div>
+				<div class="req">
+					An <a href="/plugins/audiomuse-ai/">AudioMuse-AI</a> instance — optional, and on its own
+					machine: it wants 4 cores and 8 GB of RAM, which is far more than Tapedeck
+				</div>
 			</div>
 			<div class="little">
 				<div class="little-t">It runs on very little</div>
@@ -272,8 +276,10 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 			</p>
 			<div class="code-panel pre mt-xs">{ENV}</div>
 			<p class="para xs">
-				Optional service credentials — Discogs, Apple Music, a metrics token — are all optional and
-				unconfigured is a normal state: the provider steps aside rather than erroring.
+				Optional service credentials — Discogs, Apple Music, an AudioMuse-AI sidecar, a metrics
+				token — are all optional and unconfigured is a normal state: the provider steps aside rather
+				than erroring. The sidecar can also be set in the UI, under Settings → Connections, which is
+				where it belongs: it is one connection for the whole server rather than a per-user one.
 			</p>
 		</div>
 		<div>
