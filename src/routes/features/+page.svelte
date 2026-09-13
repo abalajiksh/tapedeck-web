@@ -329,7 +329,7 @@
 			<article class="route">
 				<div class="route-head">
 					<h3 class="route-name">AudioMuse-AI</h3>
-					<span class="tag route-tag alt">Third-party</span>
+					<span class="tag route-tag">Third-party</span>
 				</div>
 				<p class="route-body">
 					Points at your media server and works out how each recording sounds — embeddings, tempo,
@@ -681,14 +681,13 @@
 		font-size: 23px;
 		margin: 0;
 	}
+	/* First-party / third-party is a category, not a status. Both neutral: the
+	   accent-2 ramp means "shipped" everywhere else on the site, and borrowing
+	   it here would read as a verdict on one of the two. */
 	.route-tag {
 		background: var(--color-neutral-200);
 		color: var(--color-neutral-800);
 		flex: none;
-	}
-	.route-tag.alt {
-		background: var(--color-accent-2-200);
-		color: var(--color-accent-2-800);
 	}
 	.route-body {
 		margin: 0;
@@ -705,13 +704,14 @@
 		margin-top: 22px;
 		padding: 26px 30px;
 		border-radius: 26px;
-		background: var(--td-band-2);
-		border: 1px solid var(--td-band-2-edge);
+		background: var(--color-bg);
+		border: 1px solid var(--color-divider);
+		border-left: 3px solid var(--color-accent);
 	}
 	.today-t {
 		margin: 0;
 		font-size: 15.5px;
-		color: var(--td-band-2-ink);
+		color: var(--color-neutral-700);
 		max-width: 80ch;
 		text-wrap: pretty;
 	}
@@ -736,15 +736,14 @@
 		width: 23px;
 		height: 23px;
 		border-radius: 999px;
-		background: color-mix(in srgb, var(--td-band-2-ink) 14%, transparent);
-		color: var(--td-band-2-ink);
+		background: var(--color-accent-200);
+		color: var(--color-accent-800);
 		font-size: 12px;
 		font-weight: 600;
 	}
 	.step-b {
 		font-size: 14px;
-		color: var(--td-band-2-ink);
-		opacity: 0.88;
+		color: var(--color-neutral-700);
 		text-wrap: pretty;
 	}
 
@@ -815,28 +814,28 @@
 	}
 
 	/* analytics callout */
+	/* A note about everything above it, so it reads as an aside rather than a
+	   seventh card that got the wrong colour — same surface as the grid, with
+	   an accent edge doing the work a second hue used to do. */
 	.callout {
 		margin-top: 22px;
 		padding: 26px 30px;
 		border-radius: 26px;
-		background: var(--td-band-2);
-		border: 1px solid var(--td-band-2-edge);
+		background: var(--color-surface);
+		border: 1px solid var(--color-divider);
+		border-left: 3px solid var(--color-accent);
 	}
 	.callout-t {
 		font-family: var(--font-heading);
 		font-size: 20px;
-		color: var(--td-band-2-ink);
+		color: var(--color-text);
 	}
 	.callout-b {
 		margin: 8px 0 0;
 		font-size: 15px;
-		color: var(--td-band-2-ink);
-		opacity: 0.85;
+		color: var(--color-neutral-700);
 		max-width: 78ch;
 		text-wrap: pretty;
-	}
-	.callout code {
-		background: color-mix(in srgb, var(--td-band-2-ink) 12%, transparent);
 	}
 
 	.wide-table {
