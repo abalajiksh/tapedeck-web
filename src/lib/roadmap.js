@@ -8,11 +8,11 @@ export const APPS = [
 	{ name: 'Apple TV', status: 'planned', body: 'For the room the hi-fi is actually in. Reading the deck, the shelf and the reports on a screen across the room.' },
 	{ name: 'Fire TV', status: 'planned', body: 'The same, on the other box people have under the television.' },
 	{ name: 'Android', status: 'planned', body: 'History, barcode scanning onto the shelf, and direct scrobbling with the output device attached.' },
-	{ name: 'Docker', status: 'dev', body: 'A container for the server, so deploying it stops meaning installing a Rust toolchain and Bun.' }
+	{ name: 'Docker', status: 'dev', body: 'A container image for the server, for hosts the Linux packages do not cover — and for anyone who would rather run a container than a service.' }
 ];
 
 export const ROADMAP = [
-	{ status: 'dev', title: 'Docker deployment', body: 'A published container image so the server can be run without a Rust toolchain and Bun on the host.' },
+	{ status: 'dev', title: 'Docker deployment', body: 'A published container image. The Linux packages already spare openSUSE, Fedora, Debian, Ubuntu and Arch a Rust toolchain; this is for everywhere else.' },
 	{ status: 'dev', title: 'Audio analysis plugin', body: 'Multidimensional features from real files, via Plex, Jellyfin and the OpenSubsonic API — replacing the Every Noise placeholder behind the Genre Map and Playlist Lab.' },
 	{ status: 'dev', title: 'Player plugins', body: 'fooyin (Tapeout) works today on Fedora and wants reports from other platforms, a Navidrome plugin is under way, SONE for TIDAL on Linux is queued.' },
 	{ status: 'planned', title: 'Android app', body: 'Browse, scan a barcode onto the shelf, and scrobble directly — contributing the one thing only Android can: which output device the audio actually left through.' },

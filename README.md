@@ -154,7 +154,7 @@ wrangler.jsonc      tells wrangler that build/ is the asset directory
 
 ### The version number
 
-The version in the hero and in the Docs env example is **not hard-coded** — it
+The version in the hero is **not hard-coded** — it
 is the highest tag on
 [the Codeberg repo](https://codeberg.org/abksh/tapedeck/tags), read at build
 time by `src/lib/version.server.js`.
@@ -169,6 +169,23 @@ The practical consequence: **it is only as fresh as the last deploy.** Every pus
 here and every merged plugin PR refreshes it. If you tag a release on Codeberg
 and want the site to follow without a commit here, trigger a rebuild of the
 Cloudflare project from the release pipeline.
+
+### The install page
+
+`/install/` lists the Linux packages the
+[openSUSE Build Service project `home:abksh:tapedeck`](https://build.opensuse.org/package/show/home:abksh:tapedeck/tapedeck)
+publishes, with the repository-setup commands for each distribution. The data
+is in `src/lib/installData.js`, and it is **hand-maintained**: the
+`obs-release` Jenkins job publishes each release tag to OBS, but nothing tells
+this site when a repository is added or dropped. When `packaging/obs/` in the
+app repo gains or loses a target, change it here too. The
+[download tree](https://download.opensuse.org/repositories/home:/abksh:/tapedeck/)
+is what to check it against.
+
+Nothing on the page names a version, so a release needs no change here. The
+signing-key fingerprint is the `home:abksh` project key's, which every
+repository shares; if OBS ever regenerates it, the Arch commands pin the old
+one and have to change with it.
 
 ### The API reference
 

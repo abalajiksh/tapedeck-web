@@ -1,18 +1,14 @@
 <script>
 	import { CLIENTS, SUBMIT, SCOPES } from '$lib/docsData.js';
 
-	let { data } = $props();
-
 	let clientIdx = $state(0);
 	const client = $derived(CLIENTS[clientIdx]);
 
-	// The version comes from the latest Codeberg tag at build time; if that
-	// lookup failed, show the placeholder rather than a stale number.
-	const ENV = $derived(`PORT=8080
+	const ENV = `PORT=8080
 HOST=0.0.0.0
 SQLITE_DB_PATH=./tapedeck.db
 RUST_LOG=info
-MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com )`);
+MUSICBRAINZ_CONTACT=you@example.com`;
 
 	const NP = `GET /public/np/<username>
 
@@ -24,7 +20,7 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 	<title>Docs — Tapedeck</title>
 	<meta
 		name="description"
-		content="Build and run Tapedeck, connect a scrobble client, submit a listen with the extended fields, and understand its auth model."
+		content="Build Tapedeck from source, connect a scrobble client, submit a listen with the extended fields, and understand its auth model."
 	/>
 </svelte:head>
 
@@ -39,11 +35,13 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 	</div>
 </header>
 
-<section class="band top-flush">
+<section class="band top-flush" id="build">
 	<div class="wrap grid-320 gap-22">
 		<div>
-			<h2 class="h2 sm">Build and run</h2>
+			<h2 class="h2 sm">Build from source</h2>
 			<p class="para sm">
+				On openSUSE, Fedora, Debian, Ubuntu or Arch, <a href="/install/">install the package</a>
+				instead: it needs no toolchain, and it comes with a systemd service. Anywhere else,
 				<code>cargo build</code> is the whole build: <code>build.rs</code> compiles the SvelteKit UI
 				and <code>rust-embed</code> bakes it into the binary, so a fresh clone compiles.
 			</p>
@@ -68,8 +66,11 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 		<div>
 			<h2 class="h2 sm">Requirements</h2>
 			<div class="reqs">
-				<div class="req">Rust 1.85+ — the SVG renderer behind report images sets the floor</div>
-				<div class="req">Bun, to build the embedded web UI</div>
+				<div class="req">
+					Rust 1.88+ to build — <code>time</code>, <code>zip</code> and <code>home</code> in the
+					lockfile set the floor
+				</div>
+				<div class="req">Bun, to build the embedded web UI. The packages need neither</div>
 				<div class="req">
 					A Plex, Navidrome, Jellyfin, Emby or Roon server — optional; the ingest API works standalone
 				</div>
@@ -85,8 +86,9 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 					<strong>512 MB of RAM and four ARM cores.</strong> The public demo at
 					<a href="https://demo.tapedeck.cc" rel="noopener">demo.tapedeck.cc</a> is a Raspberry Pi
 					Zero 2 W with a 64 GB SD card, passively cooled — one binary, one SQLite file, no fan. That
-					is the running requirement; <em>building</em> on it is another matter, so compile
-					elsewhere and copy the binary across.
+					is the running requirement; <em>building</em> on it is another matter. On 64-bit
+					Raspberry Pi OS, <a href="/install/#debian">the Debian arm64 package</a> skips the build.
+					Anywhere else, compile on a bigger machine and copy the binary across.
 				</p>
 			</div>
 		</div>
@@ -301,14 +303,14 @@ MUSICBRAINZ_USER_AGENT=Tapedeck/${data.version ?? '<version>'} ( you@example.com
 
 <section class="band dark">
 	<div class="wrap center">
-		<h2 class="h2 on-dark cta-h">Try it before you build it</h2>
+		<h2 class="h2 on-dark cta-h">Try it before you install it</h2>
 		<p class="cta-p">
 			The demo instance runs the real binary on a passively-cooled Pi Zero 2 W, with eight years of
 			generated listening on it.
 		</p>
 		<div class="btn-row center mt">
 			<a class="btn accent-btn" href="https://demo.tapedeck.cc" rel="noopener">Open the demo</a>
-			<a class="btn outline-btn" href="https://codeberg.org/abksh/tapedeck" rel="noopener">Get the source</a>
+			<a class="btn outline-btn" href="/install/">Install it</a>
 		</div>
 	</div>
 </section>

@@ -256,7 +256,7 @@
 				<a class="btn btn-secondary" href="https://codeberg.org/abksh/tapedeck" rel="noopener"
 					>Get the source</a
 				>
-				<a class="btn btn-ghost" href="/docs/">Install in five minutes →</a>
+				<a class="btn btn-ghost" href="/install/">Install in five minutes →</a>
 			</div>
 			<div class="stats">
 				<div><div class="stat-n">565</div><div class="stat-l">tests, unit-level</div></div>
@@ -1043,25 +1043,24 @@
 				run and it walks you through creating the admin account.
 			</p>
 			<div class="cta-row">
-				<a class="btn accent-btn big" href="https://codeberg.org/abksh/tapedeck" rel="noopener"
-					>Get the source on Codeberg</a
-				>
+				<a class="btn accent-btn big" href="/install/">Install the package</a>
 				<a class="btn outline big" href="https://demo.tapedeck.cc" rel="noopener">Open the live demo</a>
 				<a class="btn outline big" href="/docs/">Quickstart &amp; API</a>
 			</div>
 			<p class="fine light">
-				Requires Rust 1.85+ and Bun to build; a Docker image is in development.
+				Packaged for openSUSE, Fedora, Debian, Ubuntu and Arch; anywhere else,
+				<a href="https://codeberg.org/abksh/tapedeck" rel="noopener">build it from source</a> with
+				Rust 1.88+ and Bun. A Docker image is in development.
 				<strong class="ink-2">512 MB of RAM and four ARM cores</strong> is the whole hardware
 				requirement — not an estimate, but what demo.tapedeck.cc runs the real binary on: a
-				passively-cooled Raspberry Pi Zero 2 W with a 64 GB SD card. Build it somewhere larger and
-				copy the binary over.
+				passively-cooled Raspberry Pi Zero 2 W with a 64 GB SD card. On 64-bit Raspberry Pi OS the
+				Debian arm64 package installs as it is, with nothing to compile on the Pi.
 			</p>
 		</div>
 		<div class="term">
-			<div><span class="prompt">$</span> git clone https://codeberg.org/abksh/tapedeck.git</div>
-			<div><span class="prompt">$</span> cd tapedeck</div>
-			<div><span class="prompt">$</span> cargo build --release</div>
-			<div><span class="prompt">$</span> ./tapedeck</div>
+			<div class="term-dim"># after adding the repository for your distribution</div>
+			<div><span class="prompt">$</span> sudo apt install tapedeck</div>
+			<div><span class="prompt">$</span> sudo systemctl enable --now tapedeck</div>
 			<div class="term-ok">📋 Visit the web UI to complete setup.</div>
 			<div class="term-dim">   → http://your-server:8080</div>
 		</div>
@@ -1196,6 +1195,10 @@
 	}
 	.fine.light {
 		color: var(--color-neutral-500);
+	}
+	/* The global link colour is accent-700, nearly the background here. */
+	.fine.light a {
+		color: var(--color-accent-400);
 	}
 	.hint {
 		font-size: 13px;
