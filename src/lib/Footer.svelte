@@ -6,6 +6,7 @@
 		<a href="/shelf/">The Shelf</a>
 		<a href="/patch/">Patch</a>
 		<a href="/plugins/">Plugins</a>
+		<a href="/install/">Install</a>
 		<a href="/docs/">Docs</a>
 		<a href="https://demo.tapedeck.cc">Demo</a>
 		<span class="credit"
