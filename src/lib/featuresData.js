@@ -12,7 +12,8 @@ export const SOURCES = [
 			['Backfill', 'Yes — walks Plex history, paged'],
 			['Audio quality', 'From session metadata'],
 			['Device → chain', 'Yes'],
-			['MusicBrainz IDs', 'From the library where present']
+			['MusicBrainz IDs', 'From the library where present'],
+			['Star ratings', 'Out of 10, half stars — not yet run against a real server']
 		]
 	},
 	{
@@ -25,6 +26,7 @@ export const SOURCES = [
 			['Backfill', 'Yes — native history API'],
 			['Audio quality', 'Partial'],
 			['MusicBrainz IDs', 'Yes, from your library'],
+			['Star ratings', 'Out of 5, plus starred — verified'],
 			['Known gap', 'Artist portraits not wired']
 		]
 	},
@@ -38,7 +40,8 @@ export const SOURCES = [
 			['Backfill', 'No — starts from connection'],
 			['Audio quality', 'From session metadata'],
 			['Device → chain', 'Yes'],
-			['Artist portraits', 'Wired']
+			['Artist portraits', 'Wired'],
+			['Star ratings', 'Out of 10, plus favourites — not yet run against a real server']
 		]
 	},
 	{
@@ -51,7 +54,8 @@ export const SOURCES = [
 			['Backfill', 'No'],
 			['Confidence', 'Built from docs and a reference'],
 			['Risk', 'Silent field-name mismatch'],
-			['What would fix it', 'One captured session response']
+			['What would fix it', 'One captured session response'],
+			['Star ratings', 'As Jellyfin, and as unverified']
 		]
 	},
 	{
@@ -59,12 +63,13 @@ export const SOURCES = [
 		status: 'Untested',
 		ok: false,
 		body: 'A source of its own rather than a streamer driver: one Core owns many zones, which makes it server-shaped like Plex. It is the only way to see RAAT playback, which no other protocol exposes.',
-		body2: "Two limits of the API, not of Tapedeck: it carries no signal path — the Lossless / High Quality verdict stays inside Roon's own client — and no MusicBrainz IDs or structured metadata, only rendered display strings. A Roon listen holds less detail than a Plex one.",
+		body2: "Three limits of the API, not of Tapedeck: it carries no signal path — the Lossless / High Quality verdict stays inside Roon's own client — no MusicBrainz IDs or structured metadata, only rendered display strings, and no ratings at all. A Roon listen holds less detail than a Plex one.",
 		facts: [
 			['Setup', 'Enable the extension in Roon'],
 			['Credential', 'Roon issues its own'],
 			['Metadata', 'Display strings only'],
-			['Signal path', 'Not exposed by the API']
+			['Signal path', 'Not exposed by the API'],
+			['Star ratings', 'None — the API has no such field']
 		]
 	},
 	{
@@ -118,7 +123,7 @@ export const LINKS = [
 export const RELIABILITY = [
 	{
 		title: 'Durable ingest',
-		body: "Listens are written to SQLite — WAL mode with a busy timeout, so concurrent writers wait rather than error — before the API returns. If one can't be persisted, submit-listens returns a retryable 503 and dedup makes the retry safe."
+		body: "Listens are written to the database before the API returns — on SQLite, the default, in WAL mode with a busy timeout, so concurrent writers wait rather than error. If one can't be persisted, submit-listens returns a retryable 503 and dedup makes the retry safe."
 	},
 	{
 		title: 'At-least-once forwarding',

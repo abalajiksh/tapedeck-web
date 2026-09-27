@@ -259,9 +259,9 @@
 				<a class="btn btn-ghost" href="/install/">Install in five minutes →</a>
 			</div>
 			<div class="stats">
-				<div><div class="stat-n">565</div><div class="stat-l">tests, unit-level</div></div>
+				<div><div class="stat-n">740</div><div class="stat-l">tests, SQLite build</div></div>
 				<div><div class="stat-n">&lt;5ms</div><div class="stat-l">per ingested listen</div></div>
-				<div><div class="stat-n">7</div><div class="stat-l">sources polled</div></div>
+				<div><div class="stat-n">5</div><div class="stat-l">media servers polled</div></div>
 				<div><div class="stat-n">0</div><div class="stat-l">telemetry calls home</div></div>
 			</div>
 		</div>
@@ -1093,11 +1093,11 @@
 	}
 	.two-col {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
 		gap: 26px;
 	}
 	.two-col.wide-min {
-		grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
 	}
 	.split {
 		display: grid;

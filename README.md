@@ -189,13 +189,15 @@ one and have to change with it.
 
 ### The API reference
 
-`/api/` renders `spec/openapi.yaml` — 279 operations across 221 paths, one page
-per tag, every one prerendered. `src/lib/openapi.server.js` parses it at build
-time; it is a `.server.js` so neither `yaml` nor 465KB of spec text reaches the
-browser.
+`/api/` renders `spec/openapi.yaml` — 288 operations across 227 paths as of
+v0.120.0, one page per tag, every one prerendered. `src/lib/openapi.server.js`
+parses it at build time; it is a `.server.js` so neither `yaml` nor 750KB of
+spec text reaches the browser.
 
-**The spec is a copy, and it is machine-written.** The original lives at the
-root of the [application repo](https://codeberg.org/abksh/tapedeck), and the
+**The spec is a copy, and it is machine-written.** Since v0.119.0 the app
+generates it with [utoipa](https://github.com/juhaku/utoipa) from the handlers'
+own Rust types. The committed snapshot lives at the root of the
+[application repo](https://codeberg.org/abksh/tapedeck), and the
 `tapedeck-spec-sync` Jenkins job copies it here on every release tag — that
 push is what makes Cloudflare rebuild. Don't hand-edit it; the next release
 overwrites it. See [`spec/README.md`](spec/README.md) for why it is vendored
@@ -211,7 +213,14 @@ A malformed spec **fails the build**, naming the problem: an unresolvable
 declared in the spec's `tags:` list only warns, and its endpoints are appended
 under a heading with no description — dropping them, or refusing to build the
 whole site, would both be worse when the file arrives from a job in another
-repo. As of v0.115.1 that catches `Profile`.
+repo. The generated spec is checked upstream for one declared tag per
+operation, so this should stay quiet.
+
+A generated document uses shapes the hand-written one never did, and the
+renderer folds them into something readable rather than listing them raw: an
+`allOf` (a flattened struct) is merged into one object, a `oneOf` with a
+`null` branch (an `Option` of a named type) reads as that type `| null`, and a
+`prefixItems` tuple reads as `[string, integer]`.
 
 ### The 404 page
 

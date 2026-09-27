@@ -188,8 +188,8 @@
 	<div class="wrap center">
 		<h2 class="h2 on-dark cta-h">Run one instance. Bring the household onto it.</h2>
 		<div class="btn-row center mt">
-			<a class="btn accent-btn" href="https://codeberg.org/abksh/tapedeck" rel="noopener">Get the source</a>
-			<a class="btn outline-btn" href="/docs/">Quickstart</a>
+			<a class="btn accent-btn" href="/install/">Install it</a>
+			<a class="btn outline-btn" href="https://codeberg.org/abksh/tapedeck" rel="noopener">Get the source</a>
 		</div>
 	</div>
 </section>
