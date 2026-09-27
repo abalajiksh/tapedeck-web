@@ -215,12 +215,12 @@
 			body: 'Per-recording features computed from the real files via Plex, Jellyfin and OpenSubsonic — what replaces the Every Noise placeholder behind the Genre Map.'
 		},
 		{
-			name: 'Android, desktop and TV apps',
-			slug: null,
-			status: 'Planned',
-			statusBg: 'var(--color-neutral-200)',
-			statusFg: 'var(--color-neutral-700)',
-			body: 'macOS, Windows, Apple TV, Fire TV and Android — each a client or a standalone instance, with the self-hosted server always the source of truth.'
+			name: 'Tapehead',
+			slug: 'tapehead',
+			status: 'In development',
+			statusBg: 'var(--color-accent-200)',
+			statusFg: 'var(--color-accent-800)',
+			body: 'The Android, Fire TV and iOS client — history and the shelf on the phone, barcode scanning onto it, the words for what is playing on the TV. Foundations only so far; desktop and Apple TV apps come after.'
 		}
 	];
 </script>
