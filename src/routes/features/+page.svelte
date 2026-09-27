@@ -404,14 +404,23 @@
 				</p>
 				<p class="para sm">
 					Loves you already have on those services can be pulled back in from Settings →
-					Connections.
+					Connections. The star ratings sitting in Plex, Navidrome, Jellyfin or Emby become loves
+					from Settings → Ratings, above a threshold you set in five or ten stars, halves or whole.
+				</p>
+				<p class="para sm">
+					Each rating is kept exactly as the server gave it, beside what it was out of, and the
+					threshold is applied to the fraction. So four out of five is the same verdict as eight out
+					of ten, and a Plex 7 does not clear either. Raising the threshold takes back only the loves
+					it made. A love you pressed yourself is outside its reach, and nothing it does is forwarded
+					to Last.fm or ListenBrainz.
 				</p>
 			</div>
 			<div>
 				<h3 class="h3">Lyrics</h3>
 				<p class="para sm">
-					Fetched from LRCLIB for one reason: script detection settles any non-Latin title and gives
-					up on a romanised one. Three outcomes, all real answers — a language by script weight,
+					Read from your own Plex or Jellyfin first, from LRCLIB after that, and words you type in
+					yourself outrank both. They are fetched at all for one reason: script detection settles any
+					non-Latin title and gives up on a romanised one. Three outcomes, all real answers — a language by script weight,
 					<em>instrumental</em> when the track has no words, or nothing at all for a Latin lyric,
 					because guessing French is the mistake the fidelity cards were fixed for.
 				</p>
@@ -522,9 +531,9 @@
 						<tr><th>Scope</th><th>What it allows</th></tr>
 					</thead>
 					<tbody>
-						<tr><td><code>submit</code></td><td>Submit listens and nothing else — what every scrobble client holds</td></tr>
-						<tr><td><code>read</code></td><td>History, stats, loves, notes, now-playing, chains, gear</td></tr>
-						<tr><td><code>write</code></td><td>Loves, notes, editing or deleting a listen</td></tr>
+						<tr><td><code>submit</code></td><td>Submit listens, and read the threshold they are judged by. Nothing else — what every scrobble client holds</td></tr>
+						<tr><td><code>read</code></td><td>History, stats, charts, search, reports, sessions, Rediscovery, album and artist pages, loves, notes, lyrics, now-playing, chains, gear, the shelf, saved playlists, the Crate, the genre map</td></tr>
+						<tr><td><code>write</code></td><td>Loves, notes, editing or deleting a listen, and the shelf: barcode lookups, adding and editing a record, uploading its scans, running times, playing a side</td></tr>
 						<tr><td><code>all</code></td><td>read + write</td></tr>
 					</tbody>
 				</table>
@@ -541,14 +550,18 @@
 					Whatever scopes a token carries: everything under <code>/admin/</code>, plus sources,
 					service connections, Discogs settings, export and backup, the metadata sanitiser, the
 					enrichment jobs, and clearing every listen — the one operation a lost phone could make
-					unrecoverable.
+					unrecoverable. Removing a record from the shelf, or one of its scans, stays session-only
+					for the same reason: uploaded scans are not in the backup, so a deleted one is gone.
 				</p>
 				<h3 class="h3 mt-lg">One spec, served by the binary</h3>
 				<p class="para sm">
 					The whole API is in <code>openapi.yaml</code>, served unauthenticated at
 					<code>/api/openapi.yaml</code> by every running instance — so it describes <em>that</em>
-					instance at <em>that</em> version. A drift test walks every route in both directions, so the
-					build fails rather than sending you to an endpoint that 404s.
+					instance at <em>that</em> version. It is generated from the handlers' own Rust types with
+					utoipa, so a schema is what the server actually serialises rather than a description of it.
+					A drift test walks every route in both directions, and others check each operation's
+					documented auth against what its handler accepts, so the build fails rather than sending
+					you to an endpoint that 404s.
 				</p>
 			</div>
 		</div>

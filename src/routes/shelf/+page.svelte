@@ -207,7 +207,8 @@
 					rather than a made-up figure.
 				</p>
 				<p class="para">
-					<strong>Find running times</strong> looks the pressing up by barcode, matches tracks by title
+					<strong>Find running times</strong> looks the pressing up by its MusicBrainz release ID if you
+					paste one, by barcode otherwise, matches tracks by title
 					rather than by position — what comes back is usually a different pressing — shows you what it
 					found beside what you have, and writes only when you accept. Applying corrects the tracklist,
 					the listens already recorded, and the wear those plays banked. A running time you already have
@@ -263,8 +264,8 @@
 	<div class="wrap center">
 		<h2 class="h2 on-dark cta-h">Put a side on. Tapedeck will keep the count.</h2>
 		<div class="btn-row center mt">
-			<a class="btn accent-btn" href="https://codeberg.org/abksh/tapedeck" rel="noopener">Get the source</a>
-			<a class="btn outline-btn" href="/docs/">Quickstart</a>
+			<a class="btn accent-btn" href="/install/">Install it</a>
+			<a class="btn outline-btn" href="https://codeberg.org/abksh/tapedeck" rel="noopener">Get the source</a>
 		</div>
 	</div>
 </section>

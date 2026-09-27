@@ -114,7 +114,10 @@ path.
 
 **Pair, don't paste.** Press **Pair…**, and fooyin shows a short code you
 approve in Tapedeck under Settings → Connections. The token arrives already
-carrying `submit read write` — every scope the plugin can use. A token minted by
+carrying `submit read write` — every scope the plugin can use — from a deck at
+**v0.119.0** or later. Before that the deck dropped `write` from the request,
+so loves and uploads came back 403, and named every device "Paired device";
+pair again after upgrading if yours was paired earlier. A token minted by
 hand cannot have scopes added to it later, which is how a hand-pasted one ends
 up quietly unable to send loves. Pasting a `submit` token and pressing **Test**
 still works; **Test** reports who the token belongs to, which Tapedeck it

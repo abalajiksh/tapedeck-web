@@ -62,6 +62,13 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 				<code>TAPEDECK_SKIP_WEB_BUILD=1</code>. A Docker image is
 				<a href="/plugins/">in development</a>.
 			</p>
+			<p class="para xs">
+				Listening is stored in SQLite by default. <code>cargo build --release --features postgres</code>
+				builds against Postgres instead, with the caches in the same database, so
+				<code>DATABASE_URL</code> is the only URL to set. The backend is fixed at compile time, and
+				there is no migration tool yet: a Postgres build opens a fresh database, not your SQLite
+				one. The packages are the SQLite build.
+			</p>
 		</div>
 		<div>
 			<h2 class="h2 sm">Requirements</h2>
@@ -207,13 +214,16 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 				<p class="para ink-2 sm-plus">
 					Whatever scopes a token carries: everything under <code>/admin/</code>, plus sources,
 					service connections, Discogs settings, export and backup, the metadata sanitiser, the
-					enrichment jobs, and clearing every listen.
+					enrichment jobs, and clearing every listen. Removing a shelf record or one of its scans
+					too: uploaded scans are not in the backup, so a deleted one is gone.
 				</p>
 				<h3 class="h3 ink spaced">The spec is served by the binary</h3>
 				<p class="para ink-2 sm-plus">
 					<code>GET /api/openapi.yaml</code>, deliberately unauthenticated — it documents shapes, not
-					data, and a client has to read it before it has a credential. A drift test walks every route
-					in both directions, so the build fails rather than sending you to an endpoint that 404s.
+					data, and a client has to read it before it has a credential. It is generated with utoipa
+					from the handlers' own types, and <code>tapedeck openapi</code> prints it without starting
+					a server. A drift test walks every route in both directions, so the build fails rather than
+					sending you to an endpoint that 404s.
 					The same document is rendered here as the <a href="/api/">API reference</a>
 					— every endpoint and the auth it takes. Ask your own deck rather than this page when the two
 					could differ: it is the only thing that knows what version it is running.
