@@ -157,8 +157,8 @@
 	<div class="wrap">
 		<h2 class="h2">One server of record, many ways in.</h2>
 		<p class="lede2">
-			Desktop and TV apps are planned as both a client for your deck and a standalone instance in
-			their own right. Several instances can share users and secrets and merge — but the self-hosted
+			Tapehead, on Android, Fire TV and iOS, is a client for your deck. The desktop and Apple TV
+			apps are planned as both a client and a standalone instance in their own right. Several instances can share users and secrets and merge — but the self-hosted
 			server stays the <strong>ultimate source of truth</strong>. Anything else is a cache with a
 			nice screen on it.
 		</p>

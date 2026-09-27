@@ -1,0 +1,12 @@
+{
+  "name": "Tapehead",
+  "by": "first-party",
+  "kind": "Mobile",
+  "category": "Apps",
+  "status": "dev",
+  "summary": "The Android, Fire TV and iOS client: browse the history and the shelf on the phone, scan a record onto the shelf by its barcode, and put the words for whatever is on the deck up on the TV. Kotlin Multiplatform with Compose, Android first. Foundations only so far — the build and a Tapedeck API client generated from the deck's own OpenAPI document exist; there is no app to install yet.",
+  "adds": "Later, a scrobbler that reads AudioDeviceInfo — USB DAC vs Bluetooth vs speaker — straight onto the chain ladder's device rung",
+  "link": "https://codeberg.org/abksh/tapehead",
+  "linkLabel": "View on Codeberg",
+  "order": 50
+}
