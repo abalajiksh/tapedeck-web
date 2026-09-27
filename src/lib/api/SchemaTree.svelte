@@ -38,8 +38,7 @@
 
 	{#if node.loose}
 		<p class="note">
-			Further properties are not mapped here — the spec marks this one loose rather than claiming a
-			shape it hasn't verified.
+			Takes further properties besides these, and keeps them as sent.
 		</p>
 	{/if}
 
@@ -58,7 +57,7 @@
 
 	{#if node.items}
 		<div class="items">
-			<span class="variant-kind">each item</span>
+			<span class="variant-kind">{node.itemsLabel ?? 'each item'}</span>
 			<Self node={node.items} depth={depth + 1} />
 		</div>
 	{/if}
