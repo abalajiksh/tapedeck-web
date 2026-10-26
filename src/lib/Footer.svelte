@@ -8,7 +8,7 @@
 		<a href="/plugins/">Plugins</a>
 		<a href="/install/">Install</a>
 		<a href="/docs/">Docs</a>
-		<a href="https://demo.tapedeck.cc">Demo</a>
+		<a href="/demo/">Demo</a>
 		<span class="credit"
 			>Built on MusicBrainz, ListenBrainz, Every Noise at Once, LRCLIB and Discogs.</span
 		>

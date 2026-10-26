@@ -65,7 +65,7 @@
 		<svg class="td-i-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z" /></svg>
 	</button>
 
-	<a class="btn btn-primary demo" href="https://demo.tapedeck.cc">Live demo</a>
+	<a class="btn btn-primary demo" href="/demo/">Live demo</a>
 </nav>
 
 <style>

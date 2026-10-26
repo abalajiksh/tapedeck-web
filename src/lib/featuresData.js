@@ -27,7 +27,7 @@ export const SOURCES = [
 			['Audio quality', 'Partial'],
 			['MusicBrainz IDs', 'Yes, from your library'],
 			['Star ratings', 'Out of 5, plus starred — verified'],
-			['Known gap', 'Artist portraits not wired']
+			['Artist portraits', 'In the picker; the backfill still asks Plex and Jellyfin only']
 		]
 	},
 	{
@@ -70,6 +70,21 @@ export const SOURCES = [
 			['Metadata', 'Display strings only'],
 			['Signal path', 'Not exposed by the API'],
 			['Star ratings', 'None — the API has no such field']
+		]
+	},
+	{
+		name: 'Radio',
+		status: 'Tested',
+		ok: true,
+		body: "German public radio, tuned by the server rather than by a scrobbler. Press a preset and Tapedeck opens the station's own internet stream, throws the audio away and reads the track names the station sends \u2014 so it needs no radio hardware at all. A name heard long enough becomes a listen \u2014 source radio, client \u201cFM radio\u201d or \u201cDAB+ radio\u201d \u2014 forwarded like any other.",
+		body2:
+			'The stations are every service the nine ARD broadcasters publish through RadioDNS \u2014 about 140, each with its FM PI code, DAB service IDs and stream. RadioDNS names no frequency, DAB channel or city, so a preset asks you for those and they place the station on the dial. Commercial and worldwide stations come later.',
+		facts: [
+			['Stations', 'The nine ARD broadcasters, about 140 services'],
+			['What counts', 'Heard start to finish past 30 s, else your own threshold'],
+			['Breaks', 'News, traffic and promos go in the air log, never the history'],
+			['Untagged names', 'Wait in a review queue for Keep or Drop, if you ask them to'],
+			['Known limit', 'The stream stands in for the air, and can run seconds either side']
 		]
 	},
 	{

@@ -252,14 +252,14 @@
 				record yours.
 			</p>
 			<div class="cta-row">
-				<a class="btn btn-primary" href="https://demo.tapedeck.cc" rel="noopener">Try the live demo</a>
+				<a class="btn btn-primary" href="/demo/">Try the live demo</a>
 				<a class="btn btn-secondary" href="https://codeberg.org/abksh/tapedeck" rel="noopener"
 					>Get the source</a
 				>
 				<a class="btn btn-ghost" href="/install/">Install in five minutes →</a>
 			</div>
 			<div class="stats">
-				<div><div class="stat-n">740</div><div class="stat-l">tests, SQLite build</div></div>
+				<div><div class="stat-n">837</div><div class="stat-l">tests, SQLite build</div></div>
 				<div><div class="stat-n">&lt;5ms</div><div class="stat-l">per ingested listen</div></div>
 				<div><div class="stat-n">5</div><div class="stat-l">media servers polled</div></div>
 				<div><div class="stat-n">0</div><div class="stat-l">telemetry calls home</div></div>
@@ -575,8 +575,9 @@
 			<h2 class="h2-mid ink flush">Hands busy with a record. Words across the room.</h2>
 			<p class="para ink-2 flush">
 				A full-bleed view built for the listening you can't touch — a side is playing, the sleeve is
-				out of reach, and there is nothing to tap. Timed lines follow the clock; untimed ones you
-				move yourself.
+				out of reach, and there is nothing to tap. Timed lines follow the clock; the ribbon is a
+				scrubber when you'd rather not wait, and a song in a script you don't read comes with its
+				Latin letters under it.
 			</p>
 		</div>
 
@@ -661,8 +662,9 @@
 		<p class="theatre-note">
 			Words are fetched per track and cached here only so a note can point at a line — they are not
 			ours, and they never leave the instance: not in a backup, not in an export, not to anyone you
-			have patched with. A liner note quotes a line by <em>index</em>, never by its words. The lines
-			above are invented for this demo.
+			have patched with. A liner note quotes a line by <em>index</em>, never by its words, and a
+			romanization is produced per line for the same reason. The lines above are invented for this
+			demo.
 		</p>
 	</div>
 </section>
@@ -1044,7 +1046,7 @@
 			</p>
 			<div class="cta-row">
 				<a class="btn accent-btn big" href="/install/">Install the package</a>
-				<a class="btn outline big" href="https://demo.tapedeck.cc" rel="noopener">Open the live demo</a>
+				<a class="btn outline big" href="/demo/">Open the live demo</a>
 				<a class="btn outline big" href="/docs/">Quickstart &amp; API</a>
 			</div>
 			<p class="fine light">

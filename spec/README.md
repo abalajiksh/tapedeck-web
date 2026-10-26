@@ -37,7 +37,7 @@ path that matters.
 If the job hasn't run, or you want the site to describe a specific release:
 
 ```bash
-curl -fsSL -o spec/openapi.yaml https://codeberg.org/abksh/tapedeck/raw/tag/v0.120.0/openapi.yaml
+curl -fsSL -o spec/openapi.yaml https://codeberg.org/abksh/tapedeck/raw/tag/v0.124.0/openapi.yaml
 ```
 
 Then `bun run build`. The build parses this file and fails, naming the problem,

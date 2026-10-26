@@ -193,7 +193,7 @@
 				inside. A Docker image is <a href="/plugins/">in development</a>.
 			</p>
 			<p class="para sm">
-				Or <a href="https://demo.tapedeck.cc" rel="noopener">try the demo</a> first. It is the real
+				Or <a href="/demo/">try the demo</a> first. It is the real
 				binary on a Raspberry Pi Zero 2 W.
 			</p>
 		</div>

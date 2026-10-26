@@ -114,7 +114,7 @@ export const SUBMIT = `{
 
 export const SCOPES = [
 	['submit', 'POST /1/submit-listens, and GET /api/v1/scrobble-settings for the rule a listen is judged by. Nothing else — what every scrobble client holds'],
-	['read', 'History, stats, charts, search, reports, sessions, Rediscovery, album and artist pages, loves, notes, lyrics, now-playing, chains, gear, the shelf, saved playlists, the Crate, the genre map, your own profile'],
-	['write', 'Loves, notes, editing or deleting a listen, and the shelf: barcode lookups, adding and editing a record, its scans, running times, playing a side'],
+	['read', 'History, stats, charts, search, reports, sessions, Rediscovery, album and artist pages, loves, notes, lyrics, now-playing, chains, gear, the shelf, saved playlists, the Crate, the genre map, radio stations, presets, schedule and air log, your own profile'],
+	['write', 'Loves, notes, editing or deleting a listen, the shelf (barcode lookups, adding and editing a record, its scans, running times, playing a side), and the radio: presets, tuning in and out, its settings, and keeping or dropping a reviewed line'],
 	['all', 'read + write']
 ];

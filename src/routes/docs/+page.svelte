@@ -91,7 +91,7 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 				<div class="little-t">It runs on very little</div>
 				<p class="little-b">
 					<strong>512 MB of RAM and four ARM cores.</strong> The public demo at
-					<a href="https://demo.tapedeck.cc" rel="noopener">demo.tapedeck.cc</a> is a Raspberry Pi
+					<a href="/demo/">demo.tapedeck.cc</a> is a Raspberry Pi
 					Zero 2 W with a 64 GB SD card, passively cooled — one binary, one SQLite file, no fan. That
 					is the running requirement; <em>building</em> on it is another matter. On 64-bit
 					Raspberry Pi OS, <a href="/install/#debian">the Debian arm64 package</a> skips the build.
@@ -319,7 +319,7 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 			generated listening on it.
 		</p>
 		<div class="btn-row center mt">
-			<a class="btn accent-btn" href="https://demo.tapedeck.cc" rel="noopener">Open the demo</a>
+			<a class="btn accent-btn" href="/demo/">Open the demo</a>
 			<a class="btn outline-btn" href="/install/">Install it</a>
 		</div>
 	</div>

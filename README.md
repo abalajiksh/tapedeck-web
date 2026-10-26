@@ -189,8 +189,8 @@ one and have to change with it.
 
 ### The API reference
 
-`/api/` renders `spec/openapi.yaml` — 288 operations across 227 paths as of
-v0.120.0, one page per tag, every one prerendered. `src/lib/openapi.server.js`
+`/api/` renders `spec/openapi.yaml` — 308 operations across 241 paths as of
+v0.124.0, one page per tag, every one prerendered. `src/lib/openapi.server.js`
 parses it at build time; it is a `.server.js` so neither `yaml` nor 750KB of
 spec text reaches the browser.
 

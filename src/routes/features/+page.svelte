@@ -433,7 +433,87 @@
 					rest falling away, following the clock when they're timed. It exists for the listening you
 					can't touch: a side is playing and your hands are on a record.
 				</p>
+				<p class="para sm">
+					Whichever record is held, <em>Other versions</em> lists what else LRCLIB has for the track
+					— script, timed or plain, line count against the one held, length against the track — and a
+					pick is credited to LRCLIB rather than to you, which a correction you type still is.
+				</p>
 			</div>
+		</div>
+
+		<div class="rom">
+			<div>
+				<h3 class="h3">Lyrics in letters you read</h3>
+				<p class="para sm">
+					A song in a script you don't read is words you can't follow along to. So the reader has an
+					<strong>Original / Romanized / Both</strong> toggle, and <em>Both</em> sets the Latin
+					letters under their own line, word above word. Romanization is written natively in Rust —
+					no Python and no subprocess — and produced per line as the lyric was numbered, so a
+					<code>[[line:12]]</code> quote still points at line 12.
+				</p>
+				<p class="para sm">
+					<strong>Twelve languages, not every language.</strong> Korean, Japanese and Chinese; Hindi,
+					Bengali, Punjabi, Gujarati, Tamil, Telugu, Kannada and Malayalam; Russian. Arabic, Hebrew,
+					Thai, Greek and the Cyrillic of Russian's neighbours are left as they were written — a
+					Ukrainian or Serbian line read with Russian's rules would be wrong in a way you couldn't
+					see, so it isn't read at all.
+				</p>
+				<p class="para sm">
+					It is read <em>as sung</em> where the rules allow: Korean takes Revised Romanization after
+					the standard pronunciation rules, with liaison and assimilation applied, and Tamil voicing
+					and Hindi schwa deletion are in the readable style. Russian is spelled as written rather
+					than as sung, because reading it as sung needs the stress, which is a dictionary and not a
+					rule.
+				</p>
+			</div>
+			<div class="col tight">
+				<div class="card elev-sm pad-sm">
+					<div class="card-kicker">Two styles, your choice</div>
+					<div class="card-title">Readable, or strict</div>
+					<p class="card-body">
+						Indian scripts: ISO 15919 exactly, or lyric-site spelling. Russian: Wikipedia's spelling,
+						or ISO 9 — one Latin letter per Cyrillic one. Japanese macrons are their own switch, and
+						the choice sits in Settings.
+					</p>
+				</div>
+				<div class="card elev-sm pad-sm">
+					<div class="card-kicker">A romanised lyric in your own files</div>
+					<div class="card-title">Keep the original beside it</div>
+					<p class="card-body">
+						Tags that hold a romanised lyric can keep LRCLIB's own-script record as a companion, and
+						it is used only while the two line up — same line count, cues within two seconds. There
+						is nothing to romanize from Latin letters; the companion is what gets romanized.
+					</p>
+				</div>
+				<div class="card elev-sm pad-sm">
+					<div class="card-kicker">Shipped in the binary</div>
+					<div class="card-title">The dictionaries cost size</div>
+					<p class="card-body">
+						Japanese and Chinese need a tokeniser and a dictionary each: about 72 MB of binary, and
+						roughly 20 MB resident while in use — measured on a Pi 5. Built without them, kana is
+						still romanized and ideographs are left as written.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="rom-foot">
+			<h3 class="h3">Where the line actually is</h3>
+			<p class="para wide">
+				A timed lyric is only as good as the playhead under it, and a polled source reports its
+				position late rather than continuously — Plexamp updates its own every ~15.6 seconds and
+				repeats the last number in between. Tapedeck now works in milliseconds, treats a report
+				that is merely stale as its own age rather than as a seek, and glides a correction instead
+				of snapping backwards. The browser's clock runs off the frame timer from an anchor and
+				re-anchors over at least four seconds.
+			</p>
+			<p class="para wide">
+				And where a client reports no position at all — a ListenBrainz <code>playing_now</code>
+				carries none — the ribbon is a <strong>scrubber</strong>: drag it to a moment, press play
+				and the lines run on their own cues from there. That clock is labelled
+				<em>Your clock</em> and estimates nothing. On a track the deck can actually measure,
+				dragging is steering, and <em>Follow the deck</em> hands it back.
+			</p>
 		</div>
 	</div>
 </section>
@@ -858,6 +938,26 @@
 	@media (max-width: 860px) {
 		.src-split {
 			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	/* ── romanization ────────────────────── */
+	.rom {
+		display: grid;
+		grid-template-columns: 1.35fr 1fr;
+		gap: 34px;
+		margin-top: 38px;
+		padding-top: 32px;
+		border-top: 1px solid var(--color-divider);
+	}
+	.rom-foot {
+		margin-top: 32px;
+		padding-top: 32px;
+		border-top: 1px solid var(--color-divider);
+	}
+	@media (max-width: 900px) {
+		.rom {
+			grid-template-columns: 1fr;
+			gap: 26px;
 		}
 	}
 </style>
