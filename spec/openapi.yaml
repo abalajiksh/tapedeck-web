@@ -82,7 +82,7 @@ info:
   license:
     name: AGPL-3.0-or-later
     identifier: AGPL-3.0-or-later
-  version: 0.124.0
+  version: 0.125.1
 servers:
 - url: /
   description: The Tapedeck instance serving this document.
@@ -3711,6 +3711,50 @@ paths:
       - apiToken:
         - read
       - sessionCookie: []
+  /api/v1/artists/{id}/dossier:
+    get:
+      tags:
+      - Library
+      summary: Your history with one artist.
+      description: |-
+        Scope: `read`. When they took off, whether they are a habit or a burst,
+        the days, months and hours they were played, their longest runs and
+        album playthroughs, and how often they were your number one. Local days and
+        weeks, by your timezone and week start.
+
+        Every count of their listens comes with the count of all listens over the
+        same window, both skip-free; `capped` says that window is the most recent
+        part of a history longer than the instance reads for analytics.
+      operationId: artist_dossier
+      parameters:
+      - name: id
+        in: path
+        description: The artist's entity id, from `GET /api/v1/resolve`.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dossier'
+        '400':
+          description: That entity is not an artist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+      - apiToken:
+        - read
+      - sessionCookie: []
   /api/v1/charts:
     get:
       tags:
@@ -6464,6 +6508,71 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+  /api/v1/sources/{id}/plugin-token:
+    post:
+      tags:
+      - Sources
+      summary: Make a token for the Tapedeck plugin in Navidrome.
+      description: |-
+        Session-only. Puts the source in **plugin mode**: the engine stops polling
+        it, and listens submitted with this token that name a Navidrome song are
+        stored as this server's, so cover art and the rest of the library features
+        work for them. The login is still used for those. Calling again replaces
+        the token; the old one stops working.
+      operationId: create_plugin_token
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginTokenRequest'
+        required: true
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PluginToken'
+        '400':
+          description: Not a Navidrome source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Sources
+      summary: Remove the plugin token, and poll the source again.
+      description: |-
+        Session-only. The plugin's listens are refused from now on. Polling picks
+        up from where it last stopped, and plays the plugin already sent are
+        recognised as duplicates.
+      operationId: delete_plugin_token
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Removed.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /api/v1/connections:
     get:
       tags:
@@ -6880,6 +6989,63 @@ paths:
                 $ref: '#/components/schemas/ImportHistory'
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/import/spotify-duplicates:
+    get:
+      tags:
+      - Maintenance
+      summary: Spotify plays held twice — preview.
+      description: |-
+        A history imported from a Spotify export **and** from a ListenBrainz
+        archive whose listens ListenBrainz had itself imported from Spotify holds
+        most of those plays twice: the archive stamped each at its end, the export
+        at its start, one whole play apart. Importing no longer does this; this
+        finds what earlier imports left. Nothing is changed.
+      operationId: spotify_duplicates_preview
+      responses:
+        '200':
+          description: What would be removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelayedPreview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+      - Maintenance
+      summary: Spotify plays held twice — remove.
+      description: |-
+        Deletes the copies the preview listed, after filling in anything each
+        knew that the play it duplicates did not (never overwriting). A liner note
+        on a copy moves to the kept play; a pair where both carry one is left.
+
+        **`copies` must equal what a preview would say now.** If the history
+        changed since the preview, nothing is removed and the answer is `409` with
+        the current count — what would go is no longer what was shown.
+      operationId: spotify_duplicates_remove
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveSpotifyDuplicates'
+        required: true
+      responses:
+        '200':
+          description: Removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelayedApplied'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: The count no longer matches; preview again.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/playlist-targets:
     get:
       tags:
@@ -11763,6 +11929,10 @@ components:
           oneOf:
           - type: 'null'
           - $ref: '#/components/schemas/TapedeckPlayback'
+        tapedeck_source:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TapedeckSource'
     AdoptLyricsRequest:
       type: object
       description: An LRCLIB record to hold for a track.
@@ -12585,6 +12755,21 @@ components:
         plays:
           type: integer
           format: int64
+    AtTop:
+      type: object
+      description: Is somebody your number one, and how often.
+      required:
+      - periods
+      - of
+      properties:
+        periods:
+          type: integer
+          format: int64
+          description: Periods in which they had the most listens (ties included).
+        of:
+          type: integer
+          format: int64
+          description: Periods with any listening at all.
     AuthStatus:
       type: object
       description: Whether anyone is signed in here, and whether the instance has been set up.
@@ -13733,6 +13918,31 @@ components:
           type: number
           format: double
           description: Over the listens that carry a score; 0 with none.
+    DayCount:
+      type: object
+      description: A day, as the local midnight it began at (Unix seconds).
+      required:
+      - day
+      - date
+      - plays
+      - all
+      properties:
+        day:
+          type: integer
+          format: int64
+        date:
+          type: string
+          description: |-
+            The same day as `YYYY-MM-DD` in your timezone. A browser elsewhere
+            would put `day` on the wrong date; lay out by this.
+        plays:
+          type: integer
+          format: int64
+          description: Their listens that day.
+        all:
+          type: integer
+          format: int64
+          description: Every listen that day — the population `plays` is a share of.
     DeckChain:
       type: object
       description: One chain a deck publishes.
@@ -14083,6 +14293,113 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DiscoverDeck'
+    Dossier:
+      type: object
+      required:
+      - plays
+      - all_plays
+      - days
+      - all_days
+      - daily
+      - months
+      - clock
+      - week_start
+      - top_days
+      - runs
+      - playthroughs
+      - months_at_top
+      - weeks_at_top
+      - capped
+      properties:
+        plays:
+          type: integer
+          format: int64
+          description: Their skip-free listens in the window.
+        all_plays:
+          type: integer
+          format: int64
+          description: Everyone's — the population every share here is of.
+        days:
+          type: integer
+          format: int64
+          description: Local days they were played on.
+        all_days:
+          type: integer
+          format: int64
+          description: Local days with any listening.
+        first:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        last:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        took_off:
+          type:
+          - string
+          - 'null'
+          description: |-
+            The local day (`YYYY-MM-DD`) their two-week average climbed fastest.
+            Absent under twenty listens, or if it never climbed.
+        habit:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Habit'
+            description: Absent under five listens, where there is no pattern to score.
+        daily:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayCount'
+          description: Every day they were played, oldest first.
+        months:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonthShare'
+          description: |-
+            Every month from their first to the last of the history, oldest first,
+            including months they were not played in.
+        clock:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              format: int64
+          description: |-
+            7 × 24, rows Sunday first like the Statistics heatmap; the page
+            rotates them by `week_start`.
+        week_start:
+          type: integer
+          format: int32
+          description: First day of the week, 0 = Sunday.
+          minimum: 0
+        top_days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayCount'
+          description: Their five biggest days.
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Run'
+          description: The three longest runs, longest first.
+        playthroughs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Playthrough'
+          description: Up to ten, most tracks first.
+        months_at_top:
+          $ref: '#/components/schemas/AtTop'
+        weeks_at_top:
+          $ref: '#/components/schemas/AtTop'
+        capped:
+          type: boolean
+          description: |-
+            The instance caps analytics reads and this history is longer than the
+            cap: everything above describes only the most recent part of it.
     DryRunListen:
       type: object
       description: One listen's resolved state, computed and thrown away.
@@ -15187,6 +15504,35 @@ components:
       enum:
       - sound
       - habit
+    Habit:
+      type: object
+      description: |-
+        A daily habit or a burst? The `musical_personality` loyalty score for this
+        one artist, with the three things it is made of.
+      required:
+      - return_rate
+      - span_coverage
+      - top_day_share
+      - score
+      properties:
+        return_rate:
+          type: number
+          format: double
+          description: |-
+            Days they were played, over the days from their first listen to their
+            last.
+        span_coverage:
+          type: number
+          format: double
+          description: How much of the whole window those first and last listens span.
+        top_day_share:
+          type: number
+          format: double
+          description: The share of their listens that fell on their single biggest day.
+        score:
+          type: number
+          format: double
+          description: 0–100; high is a habit, low a burst.
     HandOver:
       type: object
       required:
@@ -17608,6 +17954,22 @@ components:
           description: |-
             Every release the listens claim, most-claimed first, so the operator can
             pick a different one than the plurality.
+    MonthShare:
+      type: object
+      required:
+      - month
+      - plays
+      - all
+      properties:
+        month:
+          type: string
+          description: '`YYYY-MM`, local.'
+        plays:
+          type: integer
+          format: int64
+        all:
+          type: integer
+          format: int64
     MostSkipped:
       type: object
       required:
@@ -19470,6 +19832,32 @@ components:
           description: |-
             The recording's ISRC. Filled from the history when absent, and where a
             target can look one up no name matching is needed at all.
+    Playthrough:
+      type: object
+      description: |-
+        One of their records played in order — track N, then N+1, … — in one
+        sitting.
+      required:
+      - album
+      - start
+      - date
+      - first_track
+      - last_track
+      properties:
+        album:
+          type: string
+        start:
+          type: integer
+          format: int64
+        date:
+          type: string
+          description: Local `YYYY-MM-DD` of `start`.
+        first_track:
+          type: integer
+          format: int32
+        last_track:
+          type: integer
+          format: int32
     PlexAccount:
       type: object
       description: |-
@@ -19485,6 +19873,49 @@ components:
           format: int64
         name:
           type: string
+    PluginLink:
+      type: object
+      description: A source's plugin token, without the token.
+      required:
+      - lyrics
+      - created_at
+      properties:
+        lyrics:
+          type: boolean
+          description: The token has `write`, so the plugin also sends lyrics from your files.
+        created_at:
+          type: integer
+          format: int64
+        last_used_at:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: |-
+            When the plugin last used it, to within five minutes. Null means it
+            never has: the token is not pasted into the plugin yet.
+    PluginToken:
+      type: object
+      required:
+      - token
+      - scopes
+      properties:
+        token:
+          type: string
+          description: Shown once. Paste it into the Tapedeck plugin's settings in Navidrome.
+        scopes:
+          type: string
+    PluginTokenRequest:
+      type: object
+      properties:
+        lyrics:
+          type:
+          - boolean
+          - 'null'
+          description: |-
+            Also grant `write`, so the plugin sends the lyrics in your files. A
+            `write` token can edit and delete your Tapedeck data, and whoever runs
+            the Navidrome server sees it. Default false.
     PollBody:
       type: object
       required:
@@ -20960,6 +21391,106 @@ components:
           minimum: 0
         reason:
           type: string
+    RelayedApplied:
+      type: object
+      description: What the repair did.
+      required:
+      - removed
+      - kept_for_notes
+      - notes_moved
+      properties:
+        removed:
+          type: integer
+          description: Copies deleted.
+          minimum: 0
+        kept_for_notes:
+          type: integer
+          description: |-
+            Copies left in place because both they and the play they duplicate
+            carry a liner note, and a note cannot be merged.
+          minimum: 0
+        notes_moved:
+          type: integer
+          description: Liner notes moved from a copy onto the play it duplicated.
+          minimum: 0
+    RelayedCopy:
+      type: object
+      description: One copy and the play it duplicates.
+      required:
+      - copy_id
+      - kept_id
+      - title
+      - artist
+      - copy_at
+      - kept_at
+      - kept_is_skip
+      properties:
+        copy_id:
+          type: integer
+          format: int64
+          description: The listen that would be removed.
+        kept_id:
+          type: integer
+          format: int64
+          description: The Spotify play it duplicates, which stays.
+        title:
+          type: string
+        artist:
+          type: string
+        copy_at:
+          type: integer
+          format: int64
+          description: When the copy says the play happened — its end. Unix seconds.
+        kept_at:
+          type: integer
+          format: int64
+          description: When the play started, from the Spotify export. Unix seconds.
+        kept_is_skip:
+          type: boolean
+          description: |-
+            Spotify's own record calls this play a skip, so the copy was counting
+            a skip as a listen.
+    RelayedPreview:
+      type: object
+      description: What the repair would remove. Nothing has been changed.
+      required:
+      - copies
+      - of_skips
+      - by_year
+      - sample
+      properties:
+        copies:
+          type: integer
+          description: Listens that are relayed copies. Pass this back to apply.
+          minimum: 0
+        of_skips:
+          type: integer
+          description: |-
+            Of those, copies of plays Spotify's export calls skips: they were
+            counting as listens.
+          minimum: 0
+        by_year:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelayedYear'
+        sample:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelayedCopy'
+          description: The first fifty, oldest first.
+    RelayedYear:
+      type: object
+      description: Copies per year, by the kept play's year in UTC.
+      required:
+      - year
+      - copies
+      properties:
+        year:
+          type: integer
+          format: int32
+        copies:
+          type: integer
+          minimum: 0
     ReleaseCandidate:
       type: object
       description: One release an album's listens claim to be, and how many say so.
@@ -20972,6 +21503,18 @@ components:
         plays:
           type: integer
           format: int64
+    RemoveSpotifyDuplicates:
+      type: object
+      description: 'What to remove: the preview''s count, said back.'
+      properties:
+        copies:
+          type:
+          - integer
+          - 'null'
+          description: |-
+            `copies` from the preview. **Required** — this deletes listens, so
+            an empty body is refused rather than read as "all of them".
+          minimum: 0
     Reports:
       type: object
       description: A feed of period cards, newest first.
@@ -21150,6 +21693,25 @@ components:
         status:
           type: string
           description: '`updated`.'
+    Run:
+      type: object
+      description: |-
+        Their listens back to back, nobody else in between and no half-hour
+        silence.
+      required:
+      - length
+      - start
+      - end
+      properties:
+        length:
+          type: integer
+          minimum: 0
+        start:
+          type: integer
+          format: int64
+        end:
+          type: integer
+          format: int64
     SanitisePreview:
       type: object
       description: What the sanitiser would change. Nothing has been changed.
@@ -22810,6 +23372,15 @@ components:
         updated_at:
           type: integer
           format: int64
+        plugin:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/PluginLink'
+            description: |-
+              Navidrome only: the plugin token made on this source, if there is one.
+              While there is, the source is in plugin mode — not polled, and listens
+              arrive from the Tapedeck plugin inside Navidrome instead. Filled in by
+              the list only.
     SourceAccounts:
       oneOf:
       - type: array
@@ -22908,6 +23479,7 @@ components:
       - kind
       - label
       - enabled
+      - plugin
       properties:
         id:
           type: integer
@@ -22937,6 +23509,11 @@ components:
           type:
           - string
           - 'null'
+        plugin:
+          type: boolean
+          description: |-
+            In plugin mode: listens are pushed by a plugin on the server, so it is
+            not polled and its `last_polled_at` is expected to stand still.
     SourceList:
       type: object
       required:
@@ -24467,6 +25044,27 @@ components:
             What it was played from — a playlist name, an album, a queue, radio.
             Free text: it is your vocabulary for your own containers and there is
             no shared one to normalise against.
+    TapedeckSource:
+      type: object
+      description: |-
+        `additional_info.tapedeck_source` — which library item was played, from a
+        plugin running inside the media server (the Navidrome plugin today).
+
+        Only read when the submitting token was made on a Navidrome source, or the
+        user has exactly one: the id means nothing without knowing which server it
+        belongs to. The listen is then stored as if that source had polled it, so
+        the cover proxy and everything else that reads a library id works as-is.
+      properties:
+        kind:
+          type:
+          - string
+          - 'null'
+          description: '`navidrome`. Anything else is ignored.'
+        song_id:
+          type:
+          - string
+          - 'null'
+          description: The library's own id for the played track (Navidrome's media file id).
     TargetSpec:
       type: object
       description: |-
