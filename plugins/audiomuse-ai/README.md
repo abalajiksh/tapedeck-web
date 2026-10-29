@@ -8,14 +8,15 @@ reports about a play, never the audio.
 There are two routes to that vector, and they are different trades rather than
 competitors.
 
-| | [Audio analysis plugin](/plugins/audio-analysis/) | AudioMuse-AI |
+| | [Vafthrudnir](/plugins/audio-analysis/) | AudioMuse-AI |
 | --- | --- | --- |
 | Approach | Pure DSP, no machine learning | Learned audio embeddings |
 | Runs on | Low compute, beside your library | 4 cores and 8 GB of RAM |
 | Who builds it | First-party | [NeptuneHub](https://github.com/NeptuneHub/AudioMuse-AI), third-party |
 
 This page is the second one. If a spare desktop or NUC is not something you
-have, the first-party plugin is the route that will not ask for one.
+have, Vafthrudnir is the route that will not ask for one — though it is an
+architecture and not yet code, where this one runs today.
 
 ## What it computes
 

@@ -112,14 +112,17 @@
 					per-recording audio analysis.
 				</p>
 				<p class="dp">
-					<strong>They are a placeholder.</strong> The replacement is an analysis plugin that computes
-					multidimensional features from the actual audio files, reaching them through the library you
-					already run — Plex, Jellyfin and the OpenSubsonic API. The server keeps the coordinates; the
-					plugin does the decoding, near the files, where the bandwidth already is.
+					<strong>They are a placeholder.</strong> The replacement is
+					<a href="/plugins/audio-analysis/">Vafthrudnir</a>, a pure-DSP companion that measures
+					rhythm, key, spectrum, structure and dynamics from the actual audio files, reaching them
+					through the library you already run — Plex, Jellyfin and the OpenSubsonic API. The server
+					keeps the coordinates; the companion does the decoding, near the files, where the
+					bandwidth already is.
 				</p>
 				<p class="dp">
 					When it lands, a track gets its own position rather than inheriting its artist's, and
-					"similar" stops meaning "by someone adjacent".
+					"similar" stops meaning "by someone adjacent". There is an architecture for it and no
+					code yet — the repository is empty, and the page says so.
 				</p>
 			</div>
 			<div class="panel">

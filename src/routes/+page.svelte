@@ -14,6 +14,7 @@
 		LYRICS,
 		LYRIC_SIDE
 	} from '$lib/homeData.js';
+	import { SCRIPTS, STYLES, ALL_TWELVE } from '$lib/romanizeData.js';
 
 	// `version` is the latest Codeberg tag, read at build time; null if that
 	// lookup failed, in which case the chip simply omits it.
@@ -56,6 +57,19 @@
 	let lyricIdx = $state(1);
 	let quoted = $state(false);
 	let pinned = $state(false);
+
+	// ── romanization ──────────────────────────────────────
+	// `view` is the reader's own Original / Romanized / Both toggle; `strict`
+	// stands in for the style settings, which are per-user in the real thing.
+	let scriptIdx = $state(0);
+	let view = $state('both');
+	let strict = $state(false);
+	const sc = $derived(SCRIPTS[scriptIdx]);
+
+	/** A line in its own script. Korean, Japanese and Chinese write no spaces. */
+	const original = (l) => l.parts.map((p) => p[0]).join(sc.spaced ? ' ' : '');
+	/** The same line in Latin letters — a dot between sung syllables. */
+	const roman = (l) => l.parts.map((p) => p[1]).join(l.syl ? '·' : ' ');
 
 	// ── notes / MCP ───────────────────────────────────────
 	let note = $state(NOTE_DEFAULT);
@@ -204,15 +218,15 @@
 			status: 'In development',
 			statusBg: 'var(--color-accent-200)',
 			statusFg: 'var(--color-accent-800)',
-			body: 'Push from the Navidrome side rather than Tapedeck polling it from outside. Navidrome already works today as a polled source.'
+			body: "Push from the Navidrome side rather than Tapedeck polling it from outside. Navidrome already works today as a polled source, and the deck's half of the plugin path — plugin mode, which mints the token and stops polling in one move — shipped in v0.125.0."
 		},
 		{
-			name: 'Audio analysis',
+			name: 'Vafthrudnir',
 			slug: 'audio-analysis',
 			status: 'In development',
 			statusBg: 'var(--color-accent-200)',
 			statusFg: 'var(--color-accent-800)',
-			body: 'Per-recording features computed from the real files via Plex, Jellyfin and OpenSubsonic — what replaces the Every Noise placeholder behind the Genre Map.'
+			body: 'Rhythm, key, spectrum and dynamics measured from the real files via Plex, Jellyfin and OpenSubsonic — pure DSP, and what replaces the Every Noise placeholder behind the Genre Map.'
 		},
 		{
 			name: 'Tapehead',
@@ -666,6 +680,123 @@
 			romanization is produced per line for the same reason. The lines above are invented for this
 			demo.
 		</p>
+
+		<!-- ── ROMANIZATION ─────────────────────────────── -->
+		<div id="romanization" class="rom-demo">
+			<div class="split lyric-head">
+				<h3 class="h2-mid ink flush">A song in a script you don't read.</h3>
+				<p class="para ink-2 flush">
+					Words you can't follow along to are words you can only hear go past. So the reader has an
+					<strong>Original / Romanized / Both</strong> toggle, and <em>Both</em> sets the Latin
+					letters under their own line. Written natively in Rust, per line, so a quoted line still
+					points where it did.
+				</p>
+			</div>
+
+			<div class="rom-panel">
+				<div class="rom-bar">
+					<div class="rom-tabs" role="tablist" aria-label="Script">
+						{#each SCRIPTS as s, i (s.id)}
+							<button
+								type="button"
+								role="tab"
+								class="rom-tab"
+								class:on={i === scriptIdx}
+								aria-selected={i === scriptIdx}
+								onclick={() => (scriptIdx = i)}>{s.label}</button
+							>
+						{/each}
+					</div>
+					<div class="rom-views" role="radiogroup" aria-label="How the words are shown">
+						{#each [['original', 'Original'], ['romanized', 'Romanized'], ['both', 'Both']] as [v, label] (v)}
+							<button
+								type="button"
+								role="radio"
+								class="rom-view"
+								class:on={view === v}
+								aria-checked={view === v}
+								onclick={() => (view = v)}>{label}</button
+							>
+						{/each}
+					</div>
+				</div>
+
+				<p class="rom-blurb">{sc.blurb}</p>
+
+				<ul class="rom-lines">
+					{#each sc.lines as l, i (i)}
+						<li class="rom-row">
+							{#if view === 'original'}
+								<span class="rom-single" lang={sc.id}>{original(l)}</span>
+							{:else if view === 'romanized'}
+								<span class="rom-single rom-latin">{roman(l)}</span>
+							{:else}
+								<span class="rom-ilv" class:syl={l.syl}>
+									{#each l.parts as p, j (j)}
+										<span class="rom-part">
+											<span class="rom-o" lang={sc.id}>{p[0]}</span>
+											<span class="rom-r">{p[1]}</span>
+										</span>
+									{/each}
+								</span>
+							{/if}
+							<span class="rom-rule">{l.rule}</span>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div class="rom-extras">
+				<div class="rom-styles">
+					<div class="rom-styles-head">
+						<span class="rom-eyebrow">Two styles, your choice</span>
+						<button type="button" class="rom-switch" onclick={() => (strict = !strict)}>
+							{strict ? 'Showing the strict one' : 'Showing the readable one'}
+						</button>
+					</div>
+					{#each STYLES as s (s.what)}
+						<div class="rom-style">
+							<span class="rom-style-what">{s.what}</span>
+							<span class="rom-style-mode" class:strict>{strict ? s.b : s.a}</span>
+							<span class="rom-style-pairs">
+								{#each s.pairs as p, k (k)}
+									<span class="rom-pair">
+										<span class="rom-pair-o">{p[0]}</span>
+										<span class="rom-pair-r">{strict ? p[2] : p[1]}</span>
+									</span>
+								{/each}
+							</span>
+						</div>
+					{/each}
+					<p class="rom-fine">
+						The Indian and Russian styles are a per-user setting; the Japanese macron switch sits in
+						the reader, next to the toggle above.
+					</p>
+				</div>
+
+				<div class="rom-twelve">
+					<span class="rom-eyebrow">Twelve languages, not every language</span>
+					<div class="rom-chips">
+						{#each ALL_TWELVE as lang (lang)}
+							<span class="rom-chip">{lang}</span>
+						{/each}
+					</div>
+					<p class="rom-fine">
+						Arabic, Hebrew, Thai and Greek are left exactly as written — and so is a Cyrillic line
+						using a letter only Ukrainian, Belarusian or Serbian has, because reading it with
+						Russian's rules would be wrong in a way you could not see. Not reading a script is an
+						answer; reading it badly is not.
+					</p>
+				</div>
+			</div>
+
+			<p class="theatre-note">
+				Every phrase above is a <strong>test case from the romanizer itself</strong>, with the
+				romanization its tests assert — constructed words, not a lyric, and not an illustration
+				either. Where a style has no example here, it is because no test pins that pair, and
+				guessing at the output is the thing this whole page is against.
+			</p>
+		</div>
 	</div>
 </section>
 
@@ -791,9 +922,9 @@
 			</div>
 			<div class="caution">
 				<strong>This is a placeholder.</strong> Every Noise places <em>artists</em>, so today every
-				track by one artist shares its sound coordinates. A
-				<a href="/plugins/audio-analysis/">plugin in development</a> will compute per-recording features
-				from the real files, through Plex, Jellyfin and OpenSubsonic.
+				track by one artist shares its sound coordinates.
+				<a href="/plugins/audio-analysis/">Vafthrudnir</a>, a pure-DSP companion, will compute
+				per-recording features from the real files, through Plex, Jellyfin and OpenSubsonic.
 			</div>
 		</div>
 
@@ -2053,6 +2184,244 @@
 		text-wrap: pretty;
 	}
 
+	/* ── romanization ─────────────────────────────────── */
+	.rom-demo {
+		margin-top: 76px;
+		padding-top: 60px;
+		border-top: 1px solid #2b2721;
+	}
+	.rom-panel {
+		margin-top: 34px;
+		border-radius: 30px;
+		background: #100f0d;
+		border: 1px solid #2b2721;
+		padding: 26px 30px 34px;
+	}
+	.rom-bar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.rom-tabs,
+	.rom-views {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+	.rom-views {
+		padding: 4px;
+		border-radius: 999px;
+		background: #0b0a09;
+		border: 1px solid #2b2721;
+	}
+	.rom-tab,
+	.rom-view {
+		cursor: pointer;
+		font: inherit;
+		font-family: var(--font-heading);
+		font-size: 13px;
+		padding: 9px 16px;
+		border-radius: 999px;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--color-neutral-500);
+		transition: color 0.12s, background 0.12s;
+	}
+	.rom-tab:hover,
+	.rom-view:hover {
+		color: var(--td-ink);
+	}
+	.rom-tab.on {
+		background: #241f19;
+		border-color: #3a352c;
+		color: var(--td-ink);
+	}
+	.rom-view.on {
+		background: var(--color-accent);
+		color: #141311;
+	}
+	.rom-blurb {
+		margin: 24px 0 0;
+		font-size: 13.5px;
+		line-height: 1.65;
+		color: var(--td-ink-2);
+		max-width: 86ch;
+		text-wrap: pretty;
+	}
+	.rom-lines {
+		list-style: none;
+		margin: 26px 0 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.rom-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 12px 22px;
+		padding: 15px 0;
+		border-top: 1px solid #211e19;
+	}
+	.rom-row:first-child {
+		border-top: none;
+	}
+	.rom-single {
+		font-family: var(--font-heading);
+		font-size: clamp(21px, 2.2vw, 31px);
+		line-height: 1.25;
+		color: var(--td-ink);
+		letter-spacing: -0.01em;
+	}
+	/* Latin output is set in the body face: it is the romanizer's answer, not a
+	   display line, and the heading face has no macrons or combining marks. */
+	.rom-single.rom-latin,
+	.rom-r {
+		font-family: var(--font-body);
+	}
+	.rom-ilv {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		gap: 4px 14px;
+	}
+	/* Sung syllables belong to one word, so they sit tight. */
+	.rom-ilv.syl {
+		gap: 4px 3px;
+	}
+	.rom-part {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+	}
+	.rom-o {
+		font-family: var(--font-heading);
+		font-size: clamp(21px, 2.2vw, 31px);
+		line-height: 1.2;
+		color: var(--td-ink);
+	}
+	.rom-r {
+		font-size: 12.5px;
+		line-height: 1.2;
+		color: var(--color-accent-400);
+		font-variant-numeric: tabular-nums;
+	}
+	.rom-rule {
+		flex: none;
+		font-size: 11.5px;
+		color: var(--color-neutral-600);
+		text-align: right;
+	}
+	.rom-extras {
+		margin-top: 26px;
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		gap: 22px;
+	}
+	.rom-styles,
+	.rom-twelve {
+		border-radius: 26px;
+		background: #100f0d;
+		border: 1px solid #2b2721;
+		padding: 24px 26px;
+	}
+	.rom-styles-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 16px;
+	}
+	.rom-eyebrow {
+		font-family: var(--font-heading);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-neutral-600);
+	}
+	.rom-switch {
+		cursor: pointer;
+		font: inherit;
+		font-size: 12px;
+		padding: 8px 15px;
+		border-radius: 999px;
+		border: 1px solid #3a352c;
+		background: transparent;
+		color: var(--td-ink);
+	}
+	.rom-switch:hover {
+		background: #241f19;
+	}
+	.rom-style {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 14px;
+		padding: 11px 0;
+		border-top: 1px solid #211e19;
+	}
+	.rom-style-what {
+		flex: none;
+		min-width: 9ch;
+		font-size: 13px;
+		color: var(--td-ink);
+	}
+	.rom-style-mode {
+		flex: none;
+		font-size: 10.5px;
+		padding: 4px 9px;
+		border-radius: 999px;
+		background: #241f19;
+		color: var(--color-neutral-500);
+	}
+	.rom-style-mode.strict {
+		background: var(--color-accent-900);
+		color: var(--color-accent-200);
+	}
+	.rom-style-pairs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 18px;
+	}
+	.rom-pair {
+		display: flex;
+		align-items: baseline;
+		gap: 7px;
+	}
+	.rom-pair-o {
+		font-size: 15px;
+		color: var(--td-ink-2);
+	}
+	.rom-pair-r {
+		font-size: 13px;
+		color: var(--color-accent-400);
+	}
+	.rom-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 7px;
+		margin: 14px 0 0;
+	}
+	.rom-chip {
+		font-size: 12px;
+		padding: 7px 13px;
+		border-radius: 999px;
+		background: #1c1a16;
+		color: var(--td-ink-2);
+	}
+	.rom-fine {
+		font-size: 12px;
+		line-height: 1.6;
+		color: var(--color-neutral-600);
+		margin: 16px 0 0;
+		text-wrap: pretty;
+	}
+
 	/* ── statistics ───────────────────────────────────── */
 	.stats-grid {
 		display: grid;
@@ -2479,6 +2848,9 @@
 			border-left: none;
 			border-top: 1px solid #2b2721;
 		}
+		.rom-extras {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 	@media (max-width: 640px) {
 		.hero {
@@ -2494,6 +2866,21 @@
 		.words {
 			padding: 34px 22px;
 			min-height: 0;
+		}
+		.rom-panel {
+			padding: 20px 18px 26px;
+		}
+		.rom-styles,
+		.rom-twelve {
+			padding: 20px 18px;
+		}
+		/* The rule label stops being a right-hand gloss and becomes a caption. */
+		.rom-row {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.rom-rule {
+			text-align: left;
 		}
 		.platter-row {
 			flex-direction: column;

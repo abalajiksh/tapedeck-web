@@ -217,6 +217,22 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 					enrichment jobs, and clearing every listen. Removing a shelf record or one of its scans
 					too: uploaded scans are not in the backup, so a deleted one is gone.
 				</p>
+				<h3 class="h3 ink spaced">Pairing, for anything without a keyboard</h3>
+				<p class="para ink-2 sm-plus">
+					A client with no browser — a TV app, a player plugin — calls
+					<code>POST /1/pair/start</code> unauthenticated, shows the eight-character code it gets
+					back, and polls while you type that code into Settings. It comes out as an ordinary
+					Tapedeck token, so nobody reads a <code>td_</code> string off a screen with a remote
+					control.
+					The vocabulary borrows from RFC 8628 because client authors have met that shape, but this
+					is <strong>not OAuth</strong>: no client registration, no <code>client_id</code>.
+					An eight-character code is guessable, so its safety is structural instead — five minutes,
+					single use in both directions, rate limited, and approval requires a signed-in session.
+					Start it from a signed-in browser and the pairing belongs to that account, which is then
+					the only account that can approve it. The token is handed over exactly once and deleted
+					from the request as it is collected; an expired code and a code that never existed give
+					the same answer, so polling cannot be used to find out which.
+				</p>
 				<h3 class="h3 ink spaced">The spec is served by the binary</h3>
 				<p class="para ink-2 sm-plus">
 					<code>GET /api/openapi.yaml</code>, deliberately unauthenticated — it documents shapes, not

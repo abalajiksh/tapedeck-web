@@ -14,8 +14,10 @@ export const ACCOUNT = {
 	password: 'platter-tape-reel-3083'
 };
 
-/* The time the whole database is dropped and rebuilt, as the server runs it. */
-export const RESET_AT = '02:00 CET';
+/* The time the whole database is dropped and rebuilt, as the server runs it.
+ * The timer names the zone rather than an offset, so it stays 02:00 local
+ * through both CET and CEST — which is why this does not say "CET". */
+export const RESET_AT = '02:00 Berlin time';
 
 export const RULES = [
 	{

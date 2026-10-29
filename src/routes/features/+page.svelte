@@ -134,6 +134,7 @@
 				</div>
 				<p class="src-body">{src.body}</p>
 				<p class="src-body">{src.body2}</p>
+				{#if src.body3}<p class="src-body">{src.body3}</p>{/if}
 			</div>
 			<div class="col tight">
 				{#each src.facts as [k, v] (k)}
@@ -225,7 +226,7 @@
 
 <section id="analytics" class="band">
 	<div class="wrap">
-		<h2 class="h2">Four ways of looking at the same history</h2>
+		<h2 class="h2">Seven ways of looking at the same history</h2>
 		<div class="grid-260 mt">
 			<div class="card elev-sm pad">
 				<div class="card-kicker">Statistics</div>
@@ -261,7 +262,7 @@
 					Your listening on Glenn McDonald's map of the genre space, with a taste trajectory over
 					time and the regions bordering what you already play. <strong>A placeholder</strong> until
 					per-recording features are computed from your real files — by the
-					<a href="/plugins/audio-analysis/">analysis plugin</a> or by
+					<a href="/plugins/audio-analysis/">Vafthrudnir</a> or by
 					<a href="/plugins/audiomuse-ai/">AudioMuse-AI</a>.
 				</p>
 			</div>
@@ -272,6 +273,16 @@
 					Forgotten favourites, loved but barely played, one-listen records, seasonal, deep cuts, the
 					3 AM club, dusty vinyl, and never heard on a particular pair of headphones. Nothing here
 					recommends music you don't own.
+				</p>
+			</div>
+			<div class="card elev-sm pad">
+				<div class="card-kicker">Artist dossier</div>
+				<div class="card-title">Your history with one of them</div>
+				<p class="card-body">
+					The day they took off, habit or passing burst, the days and hours you played them, their
+					longest unbroken runs, the records you played end to end, and the months they were your
+					number one. Every count of theirs comes with the count of all listens over the same
+					window — the share always says what it is a share of.
 				</p>
 			</div>
 			<div class="card elev-sm pad">
@@ -311,17 +322,18 @@
 		<div class="routes mt">
 			<article class="route">
 				<div class="route-head">
-					<h3 class="route-name">Analysis plugin</h3>
+					<h3 class="route-name">Vafthrudnir</h3>
 					<span class="tag route-tag">First-party</span>
 				</div>
 				<p class="route-body">
 					Sits beside your library, reachable through Plex, Jellyfin or OpenSubsonic, and decodes
-					the files where the bandwidth already is.
+					the files where the bandwidth already is. Rhythm, key, spectrum, structure and dynamics —
+					and an AcoustID fingerprint, because the file is open anyway.
 				</p>
 				<div class="col tight">
 					<div class="fact"><span class="fact-k">Method</span><span class="fact-v">Pure DSP — no machine learning</span></div>
 					<div class="fact"><span class="fact-k">Runs on</span><span class="fact-v">The hardware Tapedeck already runs on</span></div>
-					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">In development</span></div>
+					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">An architecture, and no code yet</span></div>
 				</div>
 				<a class="route-link" href="/plugins/audio-analysis/">How it will work →</a>
 			</article>
@@ -450,6 +462,8 @@
 					letters under their own line, word above word. Romanization is written natively in Rust —
 					no Python and no subprocess — and produced per line as the lyric was numbered, so a
 					<code>[[line:12]]</code> quote still points at line 12.
+					There is a <a href="/#romanization">worked example</a> on the home page — six of the
+					twelve, every phrase in it taken from the romanizer's own tests.
 				</p>
 				<p class="para sm">
 					<strong>Twelve languages, not every language.</strong> Korean, Japanese and Chinese; Hindi,
@@ -586,6 +600,17 @@
 				<p class="card-body">
 					Stored as imports, so a backfill of old history is never pushed onward onto a permanent
 					public record.
+				</p>
+			</div>
+			<div class="card elev-sm">
+				<div class="card-title">The Spotify pair, found and undone</div>
+				<p class="card-body">
+					Import a Spotify export <em>and</em> a ListenBrainz archive that ListenBrainz had itself
+					filled from Spotify, and most of those plays are in twice — one stamped at the end of the
+					track, one at the start, a whole play apart. New imports no longer do it. For the ones
+					earlier imports left, there is a preview that changes nothing and a removal that must
+					match it exactly: if the history moved in between, you get a 409 and the current count
+					rather than a deletion of something you were not shown.
 				</p>
 			</div>
 		</div>

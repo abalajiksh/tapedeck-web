@@ -22,11 +22,13 @@ export const SOURCES = [
 		ok: true,
 		body: 'Signs in as you and pulls your play history — Navidrome keeps its own, so this backfills listens from before Tapedeck existed and then keeps up live.',
 		body2: "Uses both of Navidrome's APIs: the native one for history and Subsonic for now-playing. Subsonic hashes password plus salt on every request, so it needs the account password rather than a token — encrypted at rest like every other stored credential.",
+		body3: "It can also be put into plugin mode, which mints a token for the Navidrome-side plugin and stops polling that source in the same move, so the two halves are never both running. A listen arriving on that token is stored as this server's, so cover art and the library pages work for it the way they do for a polled one. The plugin itself is still being written; this half is not.",
 		facts: [
 			['Backfill', 'Yes — native history API'],
 			['Audio quality', 'Partial'],
 			['MusicBrainz IDs', 'Yes, from your library'],
 			['Star ratings', 'Out of 5, plus starred — verified'],
+			['Plugin mode', 'Ready on the deck, waiting on the plugin'],
 			['Artist portraits', 'In the picker; the backfill still asks Plex and Jellyfin only']
 		]
 	},
@@ -159,5 +161,9 @@ export const RELIABILITY = [
 	{
 		title: 'Login throttling',
 		body: 'Repeated failed logins from an IP are rate-limited — eight tries in five minutes with Retry-After on block — to blunt online guessing. Argon2 already makes each attempt expensive.'
+	},
+	{
+		title: 'A copy that cannot act on your behalf',
+		body: "TAPEDECK_REPLICA=1 makes an instance hold the whole history and none of the outward-facing roles: it forwards no listen, builds no sinks, sends no now-playing, asks MetaBrainz nothing and is not discoverable. Everything else still works, because a staging copy you cannot use tests nothing. It is a mode in the binary rather than a restore script that strips credentials — a script is what somebody forgets on the one night they restore by hand, and the failure there is not a broken staging box, it is a listen landing on your real public record a second time, which cannot be taken back."
 	}
 ];
