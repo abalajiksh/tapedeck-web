@@ -135,6 +135,7 @@
 				<p class="src-body">{src.body}</p>
 				<p class="src-body">{src.body2}</p>
 				{#if src.body3}<p class="src-body">{src.body3}</p>{/if}
+				{#if src.body4}<p class="src-body">{src.body4}</p>{/if}
 			</div>
 			<div class="col tight">
 				{#each src.facts as [k, v] (k)}

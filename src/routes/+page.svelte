@@ -213,12 +213,12 @@
 			body: 'A native plugin for fooyin, reporting the output device, the decoded format and real skips the wire format has nowhere to put. Working — listens, skips and an offline queue exercised against a live deck, on Fedora 44 so far.'
 		},
 		{
-			name: 'Navidrome plugin',
+			name: 'Tapedeck for Navidrome',
 			slug: 'navidrome-plugin',
-			status: 'In development',
-			statusBg: 'var(--color-accent-200)',
-			statusFg: 'var(--color-accent-800)',
-			body: "Push from the Navidrome side rather than Tapedeck polling it from outside. Navidrome already works today as a polled source, and the deck's half of the plugin path — plugin mode, which mints the token and stops polling in one move — shipped in v0.125.0."
+			status: 'Shipped',
+			statusBg: 'var(--color-accent-2-200)',
+			statusFg: 'var(--color-accent-2-800)',
+			body: "Push from inside the server rather than Tapedeck polling it from outside — released, and feeding each user's own deck. It carries the decoded format, the client app, a now-playing playhead that follows pause, and the song id that makes cover art work. Plugin mode on the deck's side shipped in v0.125.0; the plugin itself is here now."
 		},
 		{
 			name: 'Vafthrudnir',
@@ -503,6 +503,11 @@
 					A side writes <strong class="ink">one listen per track</strong>, never one per side,
 					because every counting query in Tapedeck is over listens. Stylus hours are derived from the
 					sides played, so they cannot drift from the plays they claim to count.
+				</p>
+				<p class="para ink-2">
+					A collection already catalogued in DVinyl comes over from its export — label, catalogue
+					number, country, edition and shelf location included, the wishlist into the Crate. And the
+					shelf prints QR labels, so a record you pick up is one scan from its sides.
 				</p>
 				<div class="media-tags">
 					{#each ['Vinyl', 'Cassette', 'CD', 'SACD'] as m (m)}

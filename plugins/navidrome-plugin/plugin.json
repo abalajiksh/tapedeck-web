@@ -1,10 +1,12 @@
 {
-  "name": "Navidrome plugin",
-  "by": "by a contributor",
+  "name": "Tapedeck for Navidrome",
+  "by": "by princefred",
   "kind": "Server plugin",
   "category": "Servers",
-  "status": "dev",
-  "summary": "A plugin on the Navidrome side, rather than Tapedeck polling it from outside. Navidrome is already supported as a polled source today; this is the tighter integration. The deck's half shipped in v0.125.0 — a source can be put into plugin mode, which mints the plugin a token and stops polling that source in the same move, and listens from it are stored as the server's own so cover art and the library pages work. The Navidrome-side plugin is what remains.",
-  "adds": "Push instead of poll, the transcoding decision, and metadata the Subsonic surface doesn't expose",
+  "status": "shipped",
+  "summary": "A plugin on the Navidrome side, pushing each user's plays to their own deck rather than Tapedeck polling from outside. One Navidrome can feed several instances — user A to server X, users B and C to server Y. It carries what the plain ListenBrainz path has no field for: the decoded format from Navidrome's own metadata, the client app, a now-playing playhead that honours pause and resume, Navidrome's id for the played file so cover art works, and optionally the lyrics sitting in your files. Built against Navidrome 0.64.2 and Tapedeck's v0.125 API; the deck's half of the path, plugin mode, shipped in v0.125.0.",
+  "adds": "The decoded format, bit depth and lossless verdict, the player app for chain attribution, a playhead that follows pause rather than guessing, and the song id that makes cover art and the library pages work",
+  "link": "https://codeberg.org/princefred/tapedeck-for-navidrome",
+  "linkLabel": "View on Codeberg",
   "order": 20
 }

@@ -260,6 +260,65 @@
 	</div>
 </section>
 
+<section class="band surface">
+	<div class="wrap">
+		<span class="tag tag-accent">New in v0.126</span>
+		<h2 class="h2 cap-24 mt-sm">Already catalogued it somewhere else? Bring it over.</h2>
+		<p class="para wide-64 mt-sm">
+			<strong>Settings → Data → From DVinyl</strong> takes a collection export — the zip or the
+			JSON — shows you a dry run, and then imports. DVinyl has no API to sync against: it is
+			server-rendered pages behind a login cookie, with no tokens to issue, so its own per-collection
+			export is the way in. The reader is pinned against a real DVinyl 3.2.1 export rather than
+			against the shape its docs describe.
+		</p>
+		<div class="grid-280 mt-lg">
+			<div class="card elev-sm pad">
+				<div class="card-kicker">What crosses over</div>
+				<div class="card-title">The object, not just the title</div>
+				<p class="card-body">
+					Label, catalogue number, country, edition, where it is shelved, the date it went into
+					DVinyl, and its images. Discogs' side letters become real sides. Comments, format, sleeve
+					condition, copies and your custom fields go into the record's note rather than being
+					dropped on the floor.
+				</p>
+			</div>
+			<div class="card elev-sm pad">
+				<div class="card-kicker">Run it twice</div>
+				<div class="card-title">And nothing happens</div>
+				<p class="card-body">
+					Every entry is matched before it is inserted — by barcode, by Discogs id, or by kind plus
+					artist plus title — so a second import changes nothing. The shelf's own export now restores
+					<em>added_at</em> too, which it had always been writing.
+				</p>
+			</div>
+			<div class="card elev-sm pad">
+				<div class="card-kicker">The wishlist</div>
+				<div class="card-title">Goes to the Crate</div>
+				<p class="card-body">
+					As "DVinyl wishlist" — things you want rather than things you own, which is what the Crate
+					is for. Anything the Crate already holds is left alone. Digital releases and non-music
+					items are counted and left behind, and a whole-instance backup is refused outright: it
+					holds every account, not yours.
+				</p>
+			</div>
+			<div class="card elev-sm pad">
+				<div class="card-kicker">Labels</div>
+				<div class="card-title">64 × 30 mm, and a code per record</div>
+				<p class="card-body">
+					<strong>Shelf → Labels</strong> prints QR labels for the shelf. Scanning one opens that
+					record with its sides ready to go — it never starts a side by itself, because a code you
+					scanned while tidying up is not a play.
+				</p>
+			</div>
+		</div>
+		<p class="para wide-64 mt-lg">
+			Those four pressing fields — location, edition, country and label — are not import-only. They
+			are part of a pressing now: in the add and edit forms, in shelf search, and in the shelf's own
+			export and import.
+		</p>
+	</div>
+</section>
+
 <section class="band dark">
 	<div class="wrap center">
 		<h2 class="h2 on-dark cta-h">Put a side on. Tapedeck will keep the count.</h2>
