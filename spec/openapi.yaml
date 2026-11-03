@@ -82,7 +82,7 @@ info:
   license:
     name: AGPL-3.0-or-later
     identifier: AGPL-3.0-or-later
-  version: 0.126.5
+  version: 0.126.6
 servers:
 - url: /
   description: The Tapedeck instance serving this document.
@@ -6713,6 +6713,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Connections
+      summary: Disconnect ListenBrainz.
+      description: |-
+        Session-only. The same as `DELETE /api/v1/connections/{service}` with
+        `listenbrainz`.
+      operationId: disconnect_listenbrainz
+      responses:
+        '204':
+          description: Disconnected, or was never connected.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /api/v1/connections/lastfm/start:
     post:
       tags:
