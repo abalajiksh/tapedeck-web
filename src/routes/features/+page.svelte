@@ -17,7 +17,8 @@
 		['#analytics', 'Analytics'],
 		['#writing', 'Writing & lyrics'],
 		['#moving', 'Import & export'],
-		['#reliability', 'Reliability']
+		['#reliability', 'Reliability'],
+		['#tested', 'How it\'s tested']
 	];
 </script>
 
@@ -107,6 +108,12 @@
 			poll interval and filters. Polling is staggered so a household doesn't hit the same server on
 			one tick.
 		</p>
+		<p class="para wide mt-sm">
+			Four of them — Plex, Navidrome, Jellyfin and Emby — are polled from <em>real</em> servers on
+			every release, two people playing music on each, in
+			<a href="/quality/#lab">a lab kept for the purpose</a>. Where a card below says what version it
+			was tested against, that is what it means. Roon is the one source with nothing real behind it.
+		</p>
 		<div class="pillrow mt" role="tablist" aria-label="Source">
 			{#each SOURCES as s, i (s.name)}
 				<button
@@ -136,6 +143,7 @@
 				<p class="src-body">{src.body2}</p>
 				{#if src.body3}<p class="src-body">{src.body3}</p>{/if}
 				{#if src.body4}<p class="src-body">{src.body4}</p>{/if}
+				{#if src.body5}<p class="src-body">{src.body5}</p>{/if}
 			</div>
 			<div class="col tight">
 				{#each src.facts as [k, v] (k)}
@@ -670,6 +678,28 @@
 					you to an endpoint that 404s.
 				</p>
 			</div>
+		</div>
+	</div>
+</section>
+
+<section id="tested" class="band">
+	<div class="wrap">
+		<h2 class="h2">And every one of these claims is tested</h2>
+		<p class="para wide mt-sm">
+			Four real media servers — Jellyfin 12.4, Emby 4.10.2, Plex 1.43.5 and Navidrome 0.64.2 —
+			stand in a lab with two people playing music on each, and every release plays through all
+			four before it goes out. Both database backends run the whole end-to-end suite separately,
+			because they are separate builds and the bugs that matter live in only one of them.
+		</p>
+		<p class="para wide">
+			It is also where most of what is written above was corrected. A server that rejects the
+			authorization header its own previous version accepted, bitrates stored a thousand times too
+			large, a listen counting while the player sat paused: none of that is exotic, and none of it
+			was visible until something real was on the other end.
+		</p>
+		<div class="btn-row mt">
+			<a class="btn btn-secondary" href="/quality/">How it's tested</a>
+			<a class="btn btn-secondary" href="/quality/#limits">And what that misses</a>
 		</div>
 	</div>
 </section>

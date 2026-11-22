@@ -95,3 +95,47 @@ export const PATHS = [
 	['/var/log/tapedeck', 'Log files, alongside the journal'],
 	['/usr/share/doc/tapedeck/env.example', 'Every setting there is, and what it is for']
 ];
+
+/* The container image, as .github/workflows/docker.yml publishes it.
+ *
+ * Shipped in Tapedeck v0.134.0. The workflow runs on the GitHub mirror rather
+ * than in Jenkins — a v* tag reaching it builds each architecture natively and
+ * joins them under three tags. Keep TAGS in step with the workflow, not with
+ * whatever the latest release happens to be: `latest` and the two-part series
+ * tag move on their own, so only the shape documented here has to be right. */
+export const DOCKER = {
+	image: 'ghcr.io/abalajiksh/tapedeck',
+	registry: 'https://github.com/abalajiksh/tapedeck/pkgs/container/tapedeck',
+	arches: 'linux/amd64, linux/arm64',
+	tags: [
+		['latest', 'The newest release. Moves on every stable tag'],
+		['0.134', 'The series. Takes patch releases, never a new minor'],
+		['0.134.0', 'Exactly that release, and it never moves']
+	],
+	run: [
+		'docker run -d --name tapedeck -p 8080:8080 \\',
+		'  -v tapedeck-data:/data \\',
+		'  -e MUSICBRAINZ_CONTACT=you@your.domain \\',
+		'  ghcr.io/abalajiksh/tapedeck'
+	],
+	/* Each of these is a real consequence of how the image is built, and the
+	 * first one is the only way to lose data with it. */
+	notes: [
+		{
+			title: 'Keep the volume',
+			body: 'Every path Tapedeck writes defaults onto /data — the databases, the uploads, and above all tapedeck.key, the key every stored credential is encrypted with. On the container’s own layer that key would be minted afresh by the next container and orphan every credential you had saved. Mount /data and back it up.'
+		},
+		{
+			title: 'No ffmpeg in the image',
+			body: 'A report Mixdown plays in the browser, but exporting one as a video needs ffmpeg, which the image deliberately does not carry. The repository README shows how to add it if you want the export.'
+		},
+		{
+			title: 'Non-root, and health-checked',
+			body: 'It runs as uid 10001 and declares a HEALTHCHECK on /health, so Docker and Kubernetes both know when it is actually up rather than merely started.'
+		},
+		{
+			title: 'A static build on Alpine',
+			body: 'musl, with SQLite, the certificate roots and the time-zone database compiled in and DNS resolved in-process — no OpenSSL anywhere in the tree. The runtime image adds nothing to Alpine, which is the point: there is very little in it for a vulnerability scan to find.'
+		}
+	]
+};

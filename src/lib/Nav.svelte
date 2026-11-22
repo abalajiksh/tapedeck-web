@@ -28,6 +28,7 @@
 		{ href: '/shelf/', label: 'The Shelf' },
 		{ href: '/patch/', label: 'Patch' },
 		{ href: '/plugins/', label: 'Plugins' },
+		{ href: '/quality/', label: 'Tested' },
 		{ href: '/install/', label: 'Install' },
 		{ href: '/docs/', label: 'Docs' },
 		{ href: '/api/', label: 'API' }

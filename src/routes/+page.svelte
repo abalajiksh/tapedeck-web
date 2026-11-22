@@ -436,9 +436,14 @@
 				<h2 class="h2-mid">You never have to tag a listen by hand.</h2>
 				<p class="para">
 					Attribution happens at the source, but a chain lives downstream — so the server resolves
-					it on a four-rung ladder, first match winning. The order encodes what each rung <em>is</em
-					>: a binding is evidence about this listen, a token is a standing statement about one app,
-					a device is the coarsest fallback.
+					it on a five-rung ladder, first match winning. The order encodes what each rung <em>is</em
+					>: an output on a known box is evidence about this listen, a token is a standing statement
+					about one app, a device is the coarsest fallback.
+				</p>
+				<p class="para">
+					And when no rung catches it, the listen is not quietly filed wrong. It goes to an
+					<strong>inbox</strong> that asks about it once — grouping every play that arrived the same
+					way — and keeps the answer as a rule, so the question is never asked twice.
 				</p>
 				<p class="para">
 					Issue one token per app — <code>fooyin</code>, <code>Pano on Android</code> — give each a
@@ -1158,7 +1163,9 @@
 		<p class="para band-2-body">
 			A page like this normally stops here. Tapedeck is a system of record, and a system of record
 			that overstates itself is worse than one that admits a gap — so these are on the marketing page
-			rather than three clicks into an issue tracker.
+			rather than three clicks into an issue tracker. The list is shorter than it was: a lab of real
+			Jellyfin, Emby, Plex and Navidrome servers now tests every release, and
+			<a href="/quality/">what that does and does not cover</a> is written down too.
 		</p>
 		<div class="caveats">
 			{#each CAVEATS as c (c.title)}

@@ -8,12 +8,14 @@ export const SOURCES = [
 		ok: true,
 		body: 'Polled directly — no webhooks, no Plex Pass — with live Now Playing on the dashboard and a scrobble threshold that is yours: half the track or four minutes by default, changed in Settings and pushed to running sources without a restart.',
 		body2: 'Plex also keeps a play history, and Tapedeck walks it. That catches plays that finished between polls, and it pages back rather than reading one screenful — a source unreachable for an hour catches up instead of losing the gap.',
+		body3: "A real Plex server is in the test lab, and running against one is what found the rest: nothing counts while the player is paused, a listen is stamped with when the play started rather than when it crossed the threshold, the mbid:// GUIDs on the track, album and artist are kept, and a multi-artist tag — which Plex joins with a bare semicolon — is split into real credits instead of becoming one artist with a punctuation mark in its name.",
 		facts: [
+			['Tested against', 'Plex Media Server 1.43.5, every run'],
 			['Backfill', 'Yes — walks Plex history, paged'],
 			['Audio quality', 'From session metadata'],
 			['Device → chain', 'Yes'],
-			['MusicBrainz IDs', 'From the library where present'],
-			['Star ratings', 'Out of 10, half stars — not yet run against a real server']
+			['MusicBrainz IDs', "From the track, album and artist GUIDs"],
+			['Star ratings', 'Out of 10, half stars — the walk itself is still unverified']
 		]
 	},
 	{
@@ -24,9 +26,11 @@ export const SOURCES = [
 		body2: "Uses both of Navidrome's APIs: the native one for history and Subsonic for now-playing. Subsonic hashes password plus salt on every request, so it needs the account password rather than a token — encrypted at rest like every other stored credential.",
 		body3: "It can also be put into plugin mode, which mints a token for the Navidrome-side plugin and stops polling that source in the same move, so the two halves are never both running. A listen arriving on that token is stored as this server's, so cover art and the library pages work for it the way they do for a polled one.",
 		body4: "Both halves now exist. Tapedeck for Navidrome is released — a third-party plugin that pushes each user's plays to their own deck with the decoded format, the client app and a now-playing playhead that follows pause attached, and optionally the lyrics in your files. Transcode detection is the one thing it does not do yet, so a FLAC degraded on the way out still reports as the FLAC on disk.",
+		body5: "Polled listens used to carry no format at all, which the test lab caught: a real Navidrome had read the file and Tapedeck was throwing the answer away. They now carry format, sample rate, bit depth, channels and bitrate from Navidrome's own read — and a lossy file is given no bit depth, because the 16 Navidrome reports for an AAC is its decoder's output rather than anything in the file.",
 		facts: [
+			['Tested against', 'Navidrome 0.64.2, every run'],
 			['Backfill', 'Yes — native history API'],
-			['Audio quality', 'Partial polled; from the plugin, per file'],
+			['Audio quality', "Yes — format, rate, depth, channels and bitrate"],
 			['MusicBrainz IDs', 'Yes, from your library'],
 			['Star ratings', 'Out of 5, plus starred — verified'],
 			['Plugin mode', 'Shipped, and the Navidrome plugin with it'],
@@ -39,25 +43,29 @@ export const SOURCES = [
 		ok: true,
 		body: 'Polled on the shared media-browser client, with live now-playing and your own scrobble threshold. Cover art comes from the exact file that was played, proxied by Tapedeck so the browser never holds LAN credentials.',
 		body2: 'Jellyfin keeps no history a scrobbler can read, so its listens start from when you connect.',
+		body3: "A real Jellyfin 12 is in the test lab, and it refuses an API key sent the old way — the header Jellyfin 10 accepted gets a flat 401 from 12. Tapedeck sends the MediaBrowser authorization header both versions take. Jellyfin 12 also reports the recording and the release track as separate MusicBrainz IDs, so a recording id is now a recording id rather than whichever one the server listed first.",
 		facts: [
+			['Tested against', 'Jellyfin 12.4, every run'],
 			['Backfill', 'No — starts from connection'],
-			['Audio quality', 'From session metadata'],
+			['Audio quality', 'From session metadata, in kbps'],
 			['Device → chain', 'Yes'],
 			['Artist portraits', 'Wired'],
-			['Star ratings', 'Out of 10, plus favourites — not yet run against a real server']
+			['Star ratings', 'Out of 10, plus favourites — the walk itself is still unverified']
 		]
 	},
 	{
 		name: 'Emby',
-		status: 'Untested',
-		ok: false,
-		body: 'Jellyfin is a 2018 fork of Emby, so they are one protocol with an /emby/ prefix and Tapedeck drives both from one client. But Emby has developed independently for seven years and this source has never run against a real server.',
-		body2: 'The fields at risk fail silently rather than erroring: if Emby spells them differently you get listens with no codec, no device and no MusicBrainz IDs, with nothing in the log to say so. A captured /emby/Sessions response is what would close it for good.',
+		status: 'Tested',
+		ok: true,
+		body: 'Jellyfin is a 2018 fork of Emby, so they are one protocol with an /emby/ prefix and Tapedeck drives both from one client. They have developed apart for seven years, though, and for a long time this source had never been run against a real Emby server — which is now the thing that changed. A real Emby is in the test lab and every release is tested against it.',
+		body2: 'What that found was worth finding. Emby wants its own client headers before it will answer at all; stream bitrates were being stored in bits per second where the API means kilobits, which quietly mis-scored every lossy listen until a one-off repair fixed the stored rows; and the MusicBrainz id Emby offers is the release track rather than the recording, which is not the same identifier and should never have been filed as one.',
+		body3: "Lyrics were the surprise. Emby has no lyrics endpoint — asking for one gets a 500 — but it lists an .lrc file as a subtitle stream, which reads as JSON with timestamps. Emby listens also carry their item id back now, so tier-one lyrics and the artwork proxy work for them, and the proxy asks Emby rather than quietly falling through to Plex.",
 		facts: [
-			['Backfill', 'No'],
-			['Confidence', 'Built from docs and a reference'],
-			['Risk', 'Silent field-name mismatch'],
-			['What would fix it', 'One captured session response'],
+			['Tested against', 'Emby 4.10.2, every run'],
+			['Backfill', 'No — starts from connection'],
+			['Audio quality', 'From session metadata, in kbps'],
+			['Device → chain', 'Yes'],
+			['Lyrics', 'From the .lrc subtitle stream'],
 			['Star ratings', 'As Jellyfin, and as unverified']
 		]
 	},
@@ -158,6 +166,10 @@ export const RELIABILITY = [
 	{
 		title: 'Backups you can take while running',
 		body: 'A consistent VACUUM INTO snapshot of the whole database from the Settings screen or one endpoint, plus /health for uptime monitoring and admin-only Prometheus metrics.'
+	},
+	{
+		title: 'Nothing it serves phones home',
+		body: 'The interface loads no font, script or stylesheet from anywhere but the instance itself \u2014 the typefaces are compiled into the binary rather than fetched from Google, which also means the UI works on a machine with no route to the internet. An end-to-end test asserts that a page load asks for nothing but its own origin, so a reintroduced third-party link fails the build rather than being noticed by somebody reading a network tab a year later.'
 	},
 	{
 		title: 'Login throttling',

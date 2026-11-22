@@ -9,11 +9,10 @@ export const APPS = [
 	{ name: 'Android', status: 'dev', body: 'Tapehead: history, stats and the shelf on the phone, with a record added by scanning its barcode — and, later, scrobbling with the output device attached. Foundations only so far.' },
 	{ name: 'Fire TV', status: 'planned', body: 'Tapehead again, as its own TV app: what is on the deck and its lyrics, across the room. Pairs with a code, so nobody types a password with a remote.' },
 	{ name: 'iOS', status: 'planned', body: 'A Tapehead companion for the history and the shelf, from the same Kotlin Multiplatform code as the Android app.' },
-	{ name: 'Docker', status: 'dev', body: 'A container image for the server, for hosts the Linux packages do not cover — and for anyone who would rather run a container than a service.' }
+	{ name: 'Docker', status: 'shipped', body: 'A multi-arch image at ghcr.io/abalajiksh/tapedeck, published from every release tag — for hosts the Linux packages do not cover, and for anyone who would rather run a container than a service.' }
 ];
 
 export const ROADMAP = [
-	{ status: 'dev', title: 'Docker deployment', body: 'A published container image. The Linux packages already spare openSUSE, Fedora, Debian, Ubuntu and Arch a Rust toolchain; this is for everywhere else.' },
 	{ status: 'dev', title: 'Vafthrudnir, the audio analysis companion', body: 'Rhythm, key, spectrum, structure and dynamics measured from your real files, via Plex, Jellyfin and the OpenSubsonic API — pure DSP, no machine learning — replacing the Every Noise placeholder behind the Genre Map and Playlist Lab. There is an architecture and no code yet.' },
 	{ status: 'dev', title: 'Player and server plugins', body: 'Tapedeck for Navidrome is released and pushing from inside the server; fooyin (Tapeout) works today on Fedora and wants reports from other platforms; SONE for TIDAL on Linux is queued. The gap left in both is transcode detection — neither yet says whether the file was degraded on the way out.' },
 	{ status: 'dev', title: 'Tapehead, the Android app', body: 'The build and a generated API client exist; next are sign-in, the history, stats and loves, then the shelf and barcode scanning, then Fire TV, then a scrobbler contributing the one thing only Android can: which output device the audio actually left through. iOS follows as a companion.' },

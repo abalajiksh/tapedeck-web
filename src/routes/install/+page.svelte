@@ -4,7 +4,8 @@
 		PATHS,
 		OBS_PACKAGE,
 		ONE_CLICK,
-		KEY_FPR_SPACED
+		KEY_FPR_SPACED,
+		DOCKER
 	} from '$lib/installData.js';
 
 	// Which repository each distribution's picker is on. Prerendered at the
@@ -45,12 +46,14 @@
 		<p class="lede">
 			Every release is built on the openSUSE Build Service for five distributions, on x86_64 and —
 			for most of them — ARM. Add the repository once, and new versions arrive with the rest of your
-			system updates. No Rust toolchain and no Bun on the machine that runs it.
+			system updates. No Rust toolchain and no Bun on the machine that runs it. For everywhere else
+			there is a container image, on amd64 and arm64, published for every release.
 		</p>
 		<nav class="pillrow jump" aria-label="Jump to">
 			{#each DISTROS as d (d.id)}
 				<a class="pill lg" href="#{d.id}">{d.name}</a>
 			{/each}
+			<a class="pill lg" href="#docker">Docker</a>
 			<a class="pill lg" href="#after">After installing</a>
 			<a class="pill lg" href="#elsewhere">Anything else</a>
 		</nav>
@@ -128,6 +131,59 @@
 	</div>
 </section>
 
+<section class="band" id="docker">
+	<div class="wrap">
+		<h2 class="h2 mid">Docker</h2>
+		<p class="para wide-70 mt-sm">
+			A multi-arch image, built natively for each architecture from every release tag — no emulated
+			build, so the arm64 image is as fast as the amd64 one. This is the answer for a NAS, for a
+			distribution the packages do not cover, and for anyone who would simply rather run a container
+			than a system service.
+		</p>
+		<div class="docker-split">
+			<div>
+				<div class="term-box">
+					<div class="term-bar">
+						<span>{DOCKER.image} · {DOCKER.arches}</span>
+						<button type="button" class="copy" onclick={() => copy('docker', DOCKER.run)}
+							>{copied === 'docker' ? 'Copied' : 'Copy'}</button
+						>
+					</div>
+					<div class="term">
+						{#each DOCKER.run as line, i (line)}
+							<div><span class="prompt">{i === 0 ? '$' : ' '}</span> {line}</div>
+						{/each}
+					</div>
+				</div>
+				<p class="para xs wide-70">
+					<code>MUSICBRAINZ_CONTACT</code> is the one setting worth passing on the first run: without
+					an email address or URL to identify you, MusicBrainz and cover-art lookups stay off.
+					Everything else is set in the UI afterwards.
+					<a href={DOCKER.registry}>The image on GHCR</a>, and
+					<code>compose.yaml</code> in the repository, are the two starting points.
+				</p>
+				<h3 class="h3 spaced">The tags</h3>
+				<div class="tagrows">
+					{#each DOCKER.tags as [tag, what] (tag)}
+						<div class="tagrow">
+							<code class="tagrow-k">{DOCKER.image}:{tag}</code>
+							<span class="tagrow-v">{what}</span>
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="docker-notes">
+				{#each DOCKER.notes as n (n.title)}
+					<div class="card elev-sm">
+						<div class="card-title">{n.title}</div>
+						<p class="card-body">{n.body}</p>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+</section>
+
 <section class="band dark" id="after">
 	<div class="wrap grid-320">
 		<div>
@@ -187,10 +243,10 @@
 		<div>
 			<h2 class="h2 sm">Anything else</h2>
 			<p class="para sm">
-				Tapedeck is packaged for Linux only. On Debian 12, Ubuntu 22.04 or 24.04, another
-				distribution, or another system, <a href="/docs/#build">build it from source</a>. You need
-				Rust 1.88+ and Bun, and <code>cargo build --release</code> gives you one binary with the UI
-				inside. A Docker image is <a href="/plugins/">in development</a>.
+				The packages are Linux-only, and five distributions is not all of them. On Debian 12, Ubuntu
+				22.04 or 24.04, another distribution, or a NAS, <a href="#docker">run the container</a> —
+				that is what it is for. Or <a href="/docs/#build">build it from source</a>: Rust 1.88+ and
+				Bun, and <code>cargo build --release</code> gives you one binary with the UI inside.
 			</p>
 			<p class="para sm">
 				Or <a href="/demo/">try the demo</a> first. It is the real
@@ -385,6 +441,51 @@
 	.path-v {
 		font-size: 13.5px;
 		color: var(--td-ink-2);
+	}
+
+	/* ── the Docker section ────────────────────────────── */
+	.docker-split {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+		gap: 34px;
+		margin-top: 28px;
+		align-items: start;
+	}
+	@media (max-width: 900px) {
+		/* minmax(0, …) rather than a bare 1fr: a grid column's default
+		   min-width is auto, which lets the unwrapped `docker run` line inside
+		   .term push the whole page wider than the viewport instead of
+		   scrolling inside its own box. */
+		.docker-split {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	.tagrows {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-top: 14px;
+	}
+	.tagrow {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		padding: 12px 17px;
+		border: 1px solid var(--color-divider);
+		border-radius: 16px;
+	}
+	.tagrow-k {
+		font-size: 13.5px;
+		word-break: break-all;
+	}
+	.tagrow-v {
+		font-size: 13.5px;
+		color: var(--color-neutral-700);
+	}
+	.docker-notes {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
 	}
 
 	.fpr {
