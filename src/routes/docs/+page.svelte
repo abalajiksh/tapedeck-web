@@ -59,15 +59,15 @@ MUSICBRAINZ_CONTACT=you@example.com`;
 			<p class="para xs">
 				Bun is required for every cargo invocation, including <code>check</code> and
 				<code>clippy</code>. For Rust-only work against an existing <code>static/</code>, set
-				<code>TAPEDECK_SKIP_WEB_BUILD=1</code>. A Docker image is
-				<a href="/plugins/">in development</a>.
+				<code>TAPEDECK_SKIP_WEB_BUILD=1</code>. If you would rather not build at all, there are
+				<a href="/install/#docker">container images</a> for both backends.
 			</p>
 			<p class="para xs">
 				Listening is stored in SQLite by default. <code>cargo build --release --features postgres</code>
 				builds against Postgres instead, with the caches in the same database, so
 				<code>DATABASE_URL</code> is the only URL to set. The backend is fixed at compile time, and
 				there is no migration tool yet: a Postgres build opens a fresh database, not your SQLite
-				one. The packages are the SQLite build.
+				one. The packages are the SQLite build; the container images come as both, chosen by tag.
 			</p>
 		</div>
 		<div>

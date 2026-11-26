@@ -335,16 +335,16 @@
 					<span class="tag route-tag">First-party</span>
 				</div>
 				<p class="route-body">
-					Sits beside your library, reachable through Plex, Jellyfin or OpenSubsonic, and decodes
-					the files where the bandwidth already is. Rhythm, key, spectrum, structure and dynamics —
-					and an AcoustID fingerprint, because the file is open anyway.
+					Sits beside your library and decodes the files where the bandwidth already is. Rhythm,
+					key, spectrum, structure and dynamics — and an AcoustID fingerprint, because the file is
+					open anyway. It finds damaged files and duplicates on the same pass.
 				</p>
 				<div class="col tight">
 					<div class="fact"><span class="fact-k">Method</span><span class="fact-v">Pure DSP — no machine learning</span></div>
 					<div class="fact"><span class="fact-k">Runs on</span><span class="fact-v">The hardware Tapedeck already runs on</span></div>
-					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">An architecture, and no code yet</span></div>
+					<div class="fact"><span class="fact-k">Status</span><span class="fact-v">Measuring files today; not yet talking to the deck</span></div>
 				</div>
-				<a class="route-link" href="/plugins/audio-analysis/">How it will work →</a>
+				<a class="route-link" href="/plugins/audio-analysis/">Where it has got to →</a>
 			</article>
 
 			<article class="route">

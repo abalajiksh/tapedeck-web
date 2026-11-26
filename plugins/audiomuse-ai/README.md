@@ -15,8 +15,9 @@ competitors.
 | Who builds it | First-party | [NeptuneHub](https://github.com/NeptuneHub/AudioMuse-AI), third-party |
 
 This page is the second one. If a spare desktop or NUC is not something you
-have, Vafthrudnir is the route that will not ask for one — though it is an
-architecture and not yet code, where this one runs today.
+have, Vafthrudnir is the route that will not ask for one — though it measures
+files today without yet sending anything to a deck, where this one is already
+connected.
 
 ## What it computes
 

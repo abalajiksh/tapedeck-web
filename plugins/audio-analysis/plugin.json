@@ -4,7 +4,7 @@
   "kind": "Audio analysis",
   "category": "Analysis",
   "status": "dev",
-  "summary": "A C++ companion that reads your own files and measures how each one sounds — rhythm, key, spectrum, structure, dynamics — then hands the coordinates back to the deck. Pure DSP and no machine learning anywhere in it, so it runs on the kind of hardware Tapedeck itself runs on. This is what replaces the Every Noise placeholder behind the Genre Map and Playlist Lab. There is an architecture and there is no code: the repository is empty and nothing is installable yet.",
+  "summary": "A C++ companion that reads your own files and measures how each one sounds — rhythm, key, spectrum, structure, dynamics — then hands the coordinates back to the deck. Pure DSP and no machine learning anywhere in it, so it runs on the kind of hardware Tapedeck itself runs on. This is what replaces the Every Noise placeholder behind the Genre Map and Playlist Lab. Early, and no longer hypothetical: the library health checker runs as a service with its own web UI, and twelve extractors plus a Chromaprint fingerprint run over a file today. Nothing reaches the deck yet — results are not stored, scheduled or sent — and there is no release, so you build it.",
   "adds": "Per-recording sound coordinates instead of per-artist ones — and an AcoustID fingerprint for the 57% of a history that carries no recording MBID",
   "link": "https://codeberg.org/abksh/vafthrudnir",
   "linkLabel": "View on Codeberg",

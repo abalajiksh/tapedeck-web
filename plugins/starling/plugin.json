@@ -1,0 +1,12 @@
+{
+  "name": "Starling",
+  "by": "first-party",
+  "kind": "Mobile",
+  "category": "Apps",
+  "status": "dev",
+  "summary": "The Android, Fire TV and iOS client: Now Rolling on a cassette whose reels turn while it plays, the listening history, charts and loves, and the shelf — a record added by scanning the barcode on its sleeve and then played from the phone, side by side. Kotlin Multiplatform with Compose Multiplatform, so the phone screens are shared by Android and iPhone. At 0.3.0 it also scrobbles what other apps play on Android, with the output the audio left through. There is no release to download yet: it is built from source.",
+  "adds": "A scrobbler that reads AudioDeviceInfo — USB DAC vs wired vs Bluetooth vs speaker — straight onto the chain ladder's device rung, so a listen attributes itself to the gear it came out of",
+  "link": "https://codeberg.org/abksh/starling",
+  "linkLabel": "View on Codeberg",
+  "order": 50
+}

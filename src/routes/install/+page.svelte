@@ -47,7 +47,8 @@
 			Every release is built on the openSUSE Build Service for five distributions, on x86_64 and —
 			for most of them — ARM. Add the repository once, and new versions arrive with the rest of your
 			system updates. No Rust toolchain and no Bun on the machine that runs it. For everywhere else
-			there is a container image, on amd64 and arm64, published for every release.
+			there are container images, on amd64 and arm64, published for every release — one for SQLite
+			and one for Postgres.
 		</p>
 		<nav class="pillrow jump" aria-label="Jump to">
 			{#each DISTROS as d (d.id)}
@@ -135,10 +136,15 @@
 	<div class="wrap">
 		<h2 class="h2 mid">Docker</h2>
 		<p class="para wide-70 mt-sm">
-			A multi-arch image, built natively for each architecture from every release tag — no emulated
+			Multi-arch images, built natively for each architecture from every release tag — no emulated
 			build, so the arm64 image is as fast as the amd64 one. This is the answer for a NAS, for a
 			distribution the packages do not cover, and for anyone who would simply rather run a container
 			than a system service.
+		</p>
+		<p class="para wide-70 mt-sm">
+			<strong>There are two, one per database</strong>: SQLite, which is the default and needs
+			nothing beside it, and Postgres. The backend is fixed when the binary is compiled, so it is
+			two builds of the same Dockerfile rather than a setting — the tag is how you choose.
 		</p>
 		<div class="docker-split">
 			<div>
@@ -159,18 +165,32 @@
 					<code>MUSICBRAINZ_CONTACT</code> is the one setting worth passing on the first run: without
 					an email address or URL to identify you, MusicBrainz and cover-art lookups stay off.
 					Everything else is set in the UI afterwards.
-					<a href={DOCKER.registry}>The image on GHCR</a>, and
-					<code>compose.yaml</code> in the repository, are the two starting points.
+					<a href={DOCKER.registry}>The images on GHCR</a> and <code>compose.yaml</code> in the
+					repository are the two starting points; <code>compose.postgres.yaml</code> is the one for
+					Postgres, which runs the <code>:postgres</code> image beside a database and passes the
+					single <code>DATABASE_URL</code> both halves need.
 				</p>
 				<h3 class="h3 spaced">The tags</h3>
-				<div class="tagrows">
-					{#each DOCKER.tags as [tag, what] (tag)}
-						<div class="tagrow">
-							<code class="tagrow-k">{DOCKER.image}:{tag}</code>
-							<span class="tagrow-v">{what}</span>
+				{#each DOCKER.backends as b (b.name)}
+					<div class="backend">
+						<div class="backend-head">
+							<span class="backend-name">{b.name}</span>
+							<span class="backend-lede">{b.lede}</span>
 						</div>
-					{/each}
-				</div>
+						<div class="tagrows">
+							{#each b.tags as [tag, what] (tag)}
+								<div class="tagrow">
+									<code class="tagrow-k">{DOCKER.image}:{tag}</code>
+									<span class="tagrow-v">{what}</span>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{/each}
+				<p class="para xs wide-70">
+					A prerelease tag moves neither <code>:latest</code> nor <code>:postgres</code> — it
+					publishes only its own version — so a moving tag is always a stable release.
+				</p>
 			</div>
 			<div class="docker-notes">
 				{#each DOCKER.notes as n (n.title)}
@@ -460,11 +480,28 @@
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}
+	.backend {
+		margin-top: 20px;
+	}
+	.backend-head {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+	.backend-name {
+		font-family: var(--font-heading);
+		font-weight: var(--font-heading-weight);
+		font-size: 19px;
+	}
+	.backend-lede {
+		font-size: 13.5px;
+		color: var(--td-ink-2);
+	}
 	.tagrows {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		margin-top: 14px;
+		margin-top: 12px;
 	}
 	.tagrow {
 		display: flex;

@@ -1,0 +1,7 @@
+# Cloudflare static-asset redirect rules.
+#
+# Tapehead was renamed Starling in October 2026, and the plugin folder — which
+# is the URL — moved with it. The old page was linked from the roadmap and from
+# Codeberg, so keep it answering.
+/plugins/tapehead /plugins/starling/ 301
+/plugins/tapehead/ /plugins/starling/ 301

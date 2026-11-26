@@ -96,38 +96,63 @@ export const PATHS = [
 	['/usr/share/doc/tapedeck/env.example', 'Every setting there is, and what it is for']
 ];
 
-/* The container image, as .github/workflows/docker.yml publishes it.
+/* The container images, as .github/workflows/docker.yml publishes them.
  *
- * Shipped in Tapedeck v0.134.0. The workflow runs on the GitHub mirror rather
- * than in Jenkins — a v* tag reaching it builds each architecture natively and
- * joins them under three tags. Keep TAGS in step with the workflow, not with
- * whatever the latest release happens to be: `latest` and the two-part series
- * tag move on their own, so only the shape documented here has to be right. */
+ * Shipped in Tapedeck v0.134.0; the Postgres image joined it in v0.135.0. The
+ * workflow runs on the GitHub mirror rather than in Jenkins — a v* tag
+ * reaching it builds each backend on each architecture natively and joins the
+ * two digests per backend under that backend's tags.
+ *
+ * Keep BACKENDS in step with the workflow, not with whatever the latest
+ * release happens to be: `latest`, `postgres` and the two-part series tags
+ * move on their own, so only the shape documented here has to be right. The
+ * moving Postgres tag is `:postgres`, not `:latest-postgres`. */
 export const DOCKER = {
 	image: 'ghcr.io/abalajiksh/tapedeck',
 	registry: 'https://github.com/abalajiksh/tapedeck/pkgs/container/tapedeck',
 	arches: 'linux/amd64, linux/arm64',
-	tags: [
-		['latest', 'The newest release. Moves on every stable tag'],
-		['0.134', 'The series. Takes patch releases, never a new minor'],
-		['0.134.0', 'Exactly that release, and it never moves']
-	],
 	run: [
 		'docker run -d --name tapedeck -p 8080:8080 \\',
 		'  -v tapedeck-data:/data \\',
 		'  -e MUSICBRAINZ_CONTACT=you@your.domain \\',
 		'  ghcr.io/abalajiksh/tapedeck'
 	],
-	/* Each of these is a real consequence of how the image is built, and the
-	 * first one is the only way to lose data with it. */
+	/* One image per backend, from the same Dockerfile: the backend is fixed when
+	 * the binary is compiled, so it cannot be a runtime switch. */
+	backends: [
+		{
+			name: 'SQLite',
+			lede: 'The default, and the whole install — one container, one volume, no database to run beside it.',
+			tags: [
+				['latest', 'The newest release. Moves on every stable tag'],
+				['0.135', 'The series. Takes patch releases, never a new minor'],
+				['0.135.0', 'Exactly that release, and it never moves']
+			]
+		},
+		{
+			name: 'Postgres',
+			lede: 'For an existing Postgres, or several users on one. It needs DATABASE_URL and a database beside it; compose.postgres.yaml in the repository runs both.',
+			tags: [
+				['postgres', 'The newest release. Moves on every stable tag'],
+				['0.135-postgres', 'The series. Takes patch releases, never a new minor'],
+				['0.135.0-postgres', 'Exactly that release, and it never moves']
+			]
+		}
+	],
+	/* Each of these is a real consequence of how the images are built, and the
+	 * first two are the only ways to lose data with them. */
 	notes: [
 		{
 			title: 'Keep the volume',
-			body: 'Every path Tapedeck writes defaults onto /data — the databases, the uploads, and above all tapedeck.key, the key every stored credential is encrypted with. On the container’s own layer that key would be minted afresh by the next container and orphan every credential you had saved. Mount /data and back it up.'
+			body: 'Every path Tapedeck writes defaults onto /data — the databases, the uploads, and above all tapedeck.key, the key every stored credential is encrypted with. On the container’s own layer that key would be minted afresh by the next container and orphan every credential you had saved. Mount /data and back it up. On Postgres the history lives in the database instead, so back that up with pg_dump — and keep /data anyway, for the key.'
 		},
 		{
-			title: 'No ffmpeg in the image',
-			body: 'A report Mixdown plays in the browser, but exporting one as a video needs ffmpeg, which the image deliberately does not carry. The repository README shows how to add it if you want the export.'
+			title: 'Pick the backend at install time',
+			body: 'Nothing moves a SQLite history into Postgres yet, so the Postgres image pointed at an empty database starts empty. Each image refuses the other’s URL outright rather than guessing — a Postgres build handed the image’s default sqlite: path says so and stops before it connects.'
+		},
+		{
+			title: 'No ffmpeg in the images',
+			body: 'A report Mixdown plays in the browser, but exporting one as a video needs ffmpeg, which the images deliberately do not carry. The repository README shows how to add it if you want the export.'
 		},
 		{
 			title: 'Non-root, and health-checked',
@@ -135,7 +160,7 @@ export const DOCKER = {
 		},
 		{
 			title: 'A static build on Alpine',
-			body: 'musl, with SQLite, the certificate roots and the time-zone database compiled in and DNS resolved in-process — no OpenSSL anywhere in the tree. The runtime image adds nothing to Alpine, which is the point: there is very little in it for a vulnerability scan to find.'
+			body: 'musl, with the certificate roots and the time-zone database compiled in and DNS resolved in-process — no OpenSSL anywhere in the tree. The runtime image adds nothing to Alpine, which is the point: there is very little in it for a vulnerability scan to find.'
 		}
 	]
 };

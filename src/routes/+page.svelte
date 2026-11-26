@@ -226,15 +226,15 @@
 			status: 'In development',
 			statusBg: 'var(--color-accent-200)',
 			statusFg: 'var(--color-accent-800)',
-			body: 'Rhythm, key, spectrum and dynamics measured from the real files via Plex, Jellyfin and OpenSubsonic — pure DSP, and what replaces the Every Noise placeholder behind the Genre Map.'
+			body: 'Rhythm, key, spectrum, structure and dynamics measured from your real files — pure DSP, and what replaces the Every Noise placeholder behind the Genre Map. The library health checker and the per-file analysis both run today; handing the results to the deck is what is left.'
 		},
 		{
-			name: 'Tapehead',
-			slug: 'tapehead',
+			name: 'Starling',
+			slug: 'starling',
 			status: 'In development',
 			statusBg: 'var(--color-accent-200)',
 			statusFg: 'var(--color-accent-800)',
-			body: 'The Android, Fire TV and iOS client — history and the shelf on the phone, barcode scanning onto it, the words for what is playing on the TV. Foundations only so far; desktop and Apple TV apps come after.'
+			body: 'The Android, Fire TV and iOS client. At 0.3.0 the phone app runs on Android and iPhone — Now Rolling, the history, the charts and the shelf, with a record scanned on by its barcode and played from the phone — and on Android it scrobbles other apps with the output the audio left through. Built from source so far.'
 		}
 	];
 </script>
@@ -933,8 +933,8 @@
 			<div class="caution">
 				<strong>This is a placeholder.</strong> Every Noise places <em>artists</em>, so today every
 				track by one artist shares its sound coordinates.
-				<a href="/plugins/audio-analysis/">Vafthrudnir</a>, a pure-DSP companion, will compute
-				per-recording features from the real files, through Plex, Jellyfin and OpenSubsonic.
+				<a href="/plugins/audio-analysis/">Vafthrudnir</a>, a pure-DSP companion, already measures
+				per-recording features from the real files; what is left is handing them to the deck.
 			</div>
 		</div>
 
@@ -1195,7 +1195,8 @@
 			<p class="fine light">
 				Packaged for openSUSE, Fedora, Debian, Ubuntu and Arch; anywhere else,
 				<a href="https://codeberg.org/abksh/tapedeck" rel="noopener">build it from source</a> with
-				Rust 1.88+ and Bun. A Docker image is in development.
+				Rust 1.88+ and Bun — or <a href="/install/#docker">run the container</a>, for SQLite or for
+				Postgres.
 				<strong class="ink-2">512 MB of RAM and four ARM cores</strong> is the whole hardware
 				requirement — not an estimate, but what demo.tapedeck.cc runs the real binary on: a
 				passively-cooled Raspberry Pi Zero 2 W with a 64 GB SD card. On 64-bit Raspberry Pi OS the

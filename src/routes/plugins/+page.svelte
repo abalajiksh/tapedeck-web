@@ -114,15 +114,16 @@
 				<p class="dp">
 					<strong>They are a placeholder.</strong> The replacement is
 					<a href="/plugins/audio-analysis/">Vafthrudnir</a>, a pure-DSP companion that measures
-					rhythm, key, spectrum, structure and dynamics from the actual audio files, reaching them
-					through the library you already run — Plex, Jellyfin and the OpenSubsonic API. The server
-					keeps the coordinates; the companion does the decoding, near the files, where the
-					bandwidth already is.
+					rhythm, key, spectrum, structure and dynamics from the actual audio files, sitting beside
+					the library you already have. The server keeps the coordinates; the companion does the
+					decoding, near the files, where the bandwidth already is.
 				</p>
 				<p class="dp">
 					When it lands, a track gets its own position rather than inheriting its artist's, and
-					"similar" stops meaning "by someone adjacent". There is an architecture for it and no
-					code yet — the repository is empty, and the page says so.
+					"similar" stops meaning "by someone adjacent". It exists now: twelve extractors and an
+					AcoustID fingerprint run over a file today, and the library health checker runs as a
+					service with its own web UI. What is unbuilt is the part that reaches Tapedeck — storing
+					the results, scheduling them, sending them — so nothing on the Genre Map has moved yet.
 				</p>
 			</div>
 			<div class="panel">
@@ -160,7 +161,7 @@
 	<div class="wrap">
 		<h2 class="h2">One server of record, many ways in.</h2>
 		<p class="lede2">
-			Tapehead, on Android, Fire TV and iOS, is a client for your deck. The desktop and Apple TV
+			Starling, on Android, Fire TV and iOS, is a client for your deck. The desktop and Apple TV
 			apps are planned as both a client and a standalone instance in their own right. Several instances can share users and secrets and merge — but the self-hosted
 			server stays the <strong>ultimate source of truth</strong>. Anything else is a cache with a
 			nice screen on it.
